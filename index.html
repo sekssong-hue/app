@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ko"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- 📱 단독 앱 모드(standalone) 및 풀스크린 메타 태그 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- 🚀 외부 파일 없이 소스 내부에 내장된 앱 매니페스트 (display: standalone 자동 적용) -->
+    <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%EA%B9%80%EC%8B%9C%EB%AF%BC%ED%98%B8%20%ED%83%91%EC%8A%B9%20%EC%8B%A0%EC%B2%AD%EC%84%9C%22%2C%22short_name%22%3A%22%EA%B9%80%EC%8B%9C%EB%AF%BC%ED%98%B8%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f5f5f5%22%2C%22theme_color%22%3A%22%23007bff%22%7D'>
+
+    <title id="page-title">김시민호 탑승 신청서</title>
+    
+    <style>
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            padding: 20px; 
+            line-height: 1.6; 
+            font-size: 20px; 
+            background-color: #f5f5f5; 
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .title { 
+            font-size: 48px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin-bottom: 25px; 
+            color: #000; 
+            letter-spacing: 1px; 
+        }
+
+        .section-title-left, .passenger-title-text { 
+            font-size: 32px !important; 
+            font-weight: bold; 
+            color: #000; 
+        }
+        
+        .section-title { 
+            font-size: 28px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin-top: 35px; 
+            margin-bottom: 14px; 
+            color: #004080;
+        }
+
+        #departure-table th { font-size: 26px !important; background-color: #f2f2f2; }
+        #departure-table td, #departure-table label { font-size: 26px !important; font-weight: bold; }
+
+        #passenger-table th { font-size: 22px !important; }
+        #passenger-table td, 
+        #passenger-table input, 
+        #passenger-table select, 
+        #passenger-table span { 
+            font-size: 22px !important; 
+        }
+
+        #passenger-table .p-birth {
+            width: 100% !important;
+            min-width: 210px !important;
+            padding: 10px 4px !important;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .total-summary-box { font-size: 30px; font-weight: bold; color: #007bff; }
+
+        .info-box-text { 
+            font-size: 26px; 
+            line-height: 1.85; 
+            background: #fff; 
+            padding: 24px; 
+            border: 3px solid #222; 
+            text-align: left; 
+        }
+        
+        .agree-radio-label { font-size: 25px; font-weight: bold; }
+        .agree-radio-label input[type="radio"] { transform: scale(1.8); margin-right: 8px; margin-left: 10px; }
+
+        .apply-title-custom { font-size: 34px; font-weight: bold; margin-bottom: 20px; color: #000; }
+        .date-input-area { font-size: 23px; font-weight: bold; margin-bottom: 20px; }
+        .date-input-area input { font-size: 23px !important; text-align: center; border: none; background: transparent; outline: none; }
+        .rep-input-area { font-size: 22px; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        #rep-name { font-size: 22px !important; width: 220px !important; }
+
+        button { 
+            font-size: 18px; 
+            padding: 10px 18px; 
+            cursor: pointer; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            margin: 4px; 
+            font-weight: bold; 
+        }
+
+        table { border-collapse: collapse; width: 100%; margin-bottom: 15px; background-color: #fff; }
+        th, td { border: 2px solid #333; padding: 10px 6px; text-align: center; vertical-align: middle; }
+        .container { width: 100%; max-width: 1350px; margin: auto; border: 2px solid #333; padding: 30px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box; }
+        button:hover { opacity: 0.9; }
+        input[type="text"], input[type="tel"], select { border: 1px solid #ccc; padding: 8px 4px; box-sizing: border-box; text-align: center; width: 100%; background: transparent; }
+        input[type="text"]:focus, input[type="tel"]:focus, select:focus { outline: none; border-color: #007bff; }
+        
+        .input-error { border: 3px solid #dc3545 !important; background-color: #fff8f8 !important; }
+        .blacklisted-user { border: 3px solid #dc3545 !important; background-color: #ffe6e6 !important; color: #dc3545; font-weight: bold; }
+        
+        .benefit-cell { background-color: #e6f2ff !important; }
+        select:disabled { background-color: #e9ecef !important; color: #6c757d !important; cursor: not-allowed; }
+        label { cursor: pointer; }
+
+        .mode-dropdown, .lang-dropdown { position: relative; display: inline-block; }
+        .mode-content, .lang-content { 
+            display: none; 
+            position: absolute; 
+            background-color: #ffffff; 
+            min-width: 420px; 
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
+            z-index: 9999; 
+            border: 2px solid #333; 
+            padding: 10px; 
+            border-radius: 6px; 
+            top: 100%;
+            left: 0;
+            max-height: 650px; 
+            overflow-y: auto;
+        }
+        .lang-content { left: auto; right: 0; }
+        .mode-content-show, .lang-show { display: block !important; }
+
+        #ship-modal, #load-modal, #blacklist-modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 10000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.7); 
+        }
+
+        /* 📢 10인치 태블릿 세로 화면 전용 팝업 배경 오버레이 (정중앙 고정) */
+        #notice-modal { 
+            display: flex !important; 
+            position: fixed !important; 
+            z-index: 20000 !important; 
+            left: 0 !important; 
+            top: 0 !important; 
+            width: 100vw !important; 
+            height: 100vh !important; 
+            background-color: rgba(0,0,0,0.75) !important; 
+            justify-content: center !important;
+            align-items: center !important;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .modal-content { 
+            background-color: #fff; 
+            margin: 4% auto; 
+            padding: 25px; 
+            border: 3px solid #333; 
+            width: 850px; 
+            border-radius: 10px; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* 📢 10인치 세로(Portrait) 디스플레이에 완벽하게 들어맞는 팝업 컨테이너 */
+        .fit-modal-content { 
+            background-color: #ffffff; 
+            padding: 30px 25px; 
+            border: 4px solid #007bff; 
+            width: 90vw !important; 
+            max-width: 720px !important; 
+            height: 85vh !important; 
+            max-height: 900px !important; 
+            border-radius: 20px; 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0px 25px 50px rgba(0,0,0,0.5);
+            overflow-y: auto; 
+            position: relative;
+            cursor: default;
+        }
+
+        .notice-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; margin-bottom: 15px; }
+        .notice-item-card { background-color: #f8fbff; border-left: 6px solid #007bff; padding: 16px 18px; border-radius: 8px; font-size: 24px !important; font-weight: bold; color: #222; line-height: 1.45; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .notice-item-card span.icon { font-size: 28px; margin-right: 12px; color: #007bff; flex-shrink: 0; }
+        .caution-box-fit { font-size: 26px !important; text-align: center; background: linear-gradient(135deg, #2c3e50, #1a252f); color: #fff; padding: 18px; font-weight: bold; border-radius: 10px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        
+        .signature-area { margin-top: 30px; text-align: center; border-top: 2px solid #333; padding-top: 20px; }
+        #sig-canvas { border: 1px solid #333; vertical-align: middle; cursor: crosshair; touch-action: none; background-color: #fff; width: 300px; height: 100px; }
+        .disabled-time-label { opacity: 0.5; color: #888 !important; cursor: not-allowed !important; }
+
+        .blacklist-col { display: none; }
+        .blacklist-checkbox-label { font-size: 15px; color: #dc3545; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
+        .blacklist-checkbox-label input { transform: scale(1.3); cursor: pointer; }
+
+        @media print {
+            body { background: none; padding: 0; font-size: 16px; }
+            .container { width: 100%; border: none; padding: 0; box-shadow: none; }
+            .mode-dropdown, .lang-dropdown, button:not(#clear-btn), #notice-modal, #ship-modal, #load-modal, #blacklist-modal { display: none !important; }
+            .blacklist-col { display: none !important; }
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+
+<!-- 안내사항 팝업 모달 -->
+<div id="notice-modal" onclick="closeNoticeModal()">
+    <div class="fit-modal-content" onclick="event.stopPropagation();">
+        <div>
+            <h2 style="font-size: 36px !important; color: #007bff; margin: 0 0 14px 0; text-align: center; font-weight: 900; letter-spacing: -0.5px;" data-lang-key="popup-title">📢 김시민호 탑승 안내사항</h2>
+            
+            <div class="notice-list-container">
+                <div class="notice-item-card">
+                    <span class="icon">✔</span>
+                    <div>김시민호 인터넷 예약자는 탑승신청서를 작성하지 않아도 됩니다.</div>
+                </div>
+                <div class="notice-item-card">
+                    <span class="icon">✔</span>
+                    <div>김시민호 현장 탑승자는 매표소에 탑승신청서를 작성해서 제시해 주세요.</div>
+                </div>
+                <div class="notice-item-card">
+                    <span class="icon">✔</span>
+                    <div>요금감면 및 면제대상자는 매표소에 탑승신청서를 작성해서 증빙서류(신분증)를 같이 제시해 주세요.</div>
+                </div>
+                <div class="notice-item-card">
+                    <span class="icon">✔</span>
+                    <div>영·유아(0세 포함)도 작성해 주세요.</div>
+                </div>
+            </div>
+
+            <div class="caution-box-fit" data-lang-key="caution-2">
+                ⏰ 출발시간 10분 전에 김시민호 탑승장에서 대기하여 주십시오.
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <p style="font-size: 19px !important; color: #555; margin: 0 0 10px 0; font-weight: bold;" data-lang-key="popup-desc">※ [확인] 버튼을 누르거나 바탕화면을 클릭하면 신청서를 작성할 수 있습니다.</p>
+            <button type="button" id="notice-confirm-btn" onclick="closeNoticeModal()" style="background-color: #28a745; font-size: 28px !important; padding: 16px 0; width: 100%; border-radius: 12px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(40,167,69,0.3); cursor: pointer;" data-lang-key="popup-btn">확 인 (신청서 작성하기)</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; position: relative; z-index: 50;">
+        <div style="display: flex; gap: 8px;">
+            <div class="mode-dropdown">
+                <button type="button" onclick="toggleMenu('workerMenu')" style="background-color: #17a2b8;" id="btn-worker" data-lang-key="worker-btn">근무자모드 ▼</button>
+                <div id="workerMenu" class="mode-content">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <button type="button" onclick="saveData()" style="background-color: #28a745; width: 100%; margin: 2px 0;" data-lang-key="adm-save">저장</button>
+                        <button type="button" onclick="openLoadModal()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" data-lang-key="adm-load">불러오기</button>
+                        <button type="button" onclick="printPage()" style="background-color: #6c757d; width: 100%; margin: 2px 0;" data-lang-key="adm-print">인쇄</button>
+                        <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-worker">🚨 탑승제한 열 표시 (OFF)</button>
+                        <hr style="border: 0; border-top: 1px solid #ccc; margin: 4px 0;">
+                        <button type="button" onclick="sendRemainingSeats()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" data-lang-key="btn-send-seat">잔여석전송</button>
+                        <button type="button" onclick="cancelRemainingSeats()" style="background-color: #6c757d; width: 100%; margin: 2px 0;" data-lang-key="btn-cancel-seat">잔여석전송취소</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mode-dropdown">
+                <button type="button" onclick="toggleMenu('adminMenu')" style="background-color: #343a40;" data-lang-key="admin-btn">관리자모드 ▼</button>
+                <div id="adminMenu" class="mode-content">
+                    <button type="button" onclick="openShipManager()" style="background-color: #6610f2; width: 100%; margin: 2px 0;" data-lang-key="adm-ship">선박/시간 관리</button>
+                    <button type="button" onclick="togglePopupSetting()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" id="btn-popup-setting">팝업창 사용 설정 (ON)</button>
+                    <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-admin">🚨 탑승제한 열 표시 (OFF)</button>
+                    <button type="button" onclick="openBlacklistModal()" style="background-color: #dc3545; width: 100%; margin: 2px 0;">🚨 탑승 제한(블랙리스트) 목록 관리</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" onclick="refreshForm()" style="background-color: #fd7e14;" data-lang-key="btn-refresh">🔄 새로고침</button>
+
+            <div class="lang-dropdown">
+                <button type="button" onclick="toggleMenu('langMenu')" style="background-color: #6c757d;" data-lang-key="lang-label">🌐 언어선택 ▼</button>
+                <div id="langMenu" class="lang-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="title" data-lang-key="main-title">김시민호 탑승 신청서</div>
+
+    <div class="section-title-left" data-lang-key="sec-depart-title">1. 김시민호 선택 및 출발 시간 선택</div>
+
+    <table id="departure-table">
+        <tbody id="departure-tbody"></tbody>
+    </table>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; margin-top: 25px;">
+        <div class="passenger-title-text" data-lang-key="passenger-list-title">2. 김시민호 탑승자 명단</div>
+        <div class="total-summary-box">
+            <span data-lang-key="total-price-label">총금액</span>: <span id="total-price">0</span>원 &nbsp;|&nbsp; 
+            <span data-lang-key="total-count-label">총 인원</span>: <span id="total-count">0</span> <span data-lang-key="person-unit">명</span>
+        </div>
+    </div>
+    
+    <table id="passenger-table">
+        <thead>
+            <tr>
+                <th style="width: 4%;" data-lang-key="th-no"> </th>
+                <th style="width: 11%;" data-lang-key="th-name">성 명</th>
+                <th style="width: 24%;" data-lang-key="th-birth">생년월일(YYYYMMDD-*)</th>
+                <th style="width: 15%;" data-lang-key="th-phone">연락처(11자)</th>
+                <th style="width: 12%;" data-lang-key="th-addr">거주지</th>
+                <th style="width: 13%;" data-lang-key="th-discount">할인(50%)</th>
+                <th style="width: 13%;" data-lang-key="th-exemption">면제(100%)</th>
+                <th style="width: 8%;" data-lang-key="th-gender">성 별</th>
+                <th class="blacklist-col" style="width: 8%;">탑승제한</th>
+            </tr>
+        </thead>
+        <tbody id="passenger-tbody"></tbody>
+    </table>
+    
+    <div style="text-align: left; margin-bottom: 20px;">
+        <button type="button" onclick="addPassengerRow()" style="background-color: #28a745; padding: 12px 20px;" data-lang-key="btn-add">+ 탑승자 추가</button>
+        <button type="button" onclick="removeLastPassengerRow()" style="background-color: #dc3545; margin-left: 5px; padding: 12px 20px;" data-lang-key="btn-del">- 탑승자 삭제</button>
+    </div>
+
+    <div class="section-title" data-lang-key="prohibit-title">※ 김시민호 탑승 금지 및 제한 ※</div>
+    <div class="info-box-text" data-lang-key="prohibit-desc">
+       <b> 1. 음주자(주취자) 및 정신질환자 탑승 금지<br> 2. 중학생 이하는 보호자와 같이 탑승 가능<br> 3. 반려동물와 같이 탑승 금지<br> 4. 그 외 안전요원의 판단에 따라 탑승이 제한될 수 있습니다.</b>
+    </div>
+    <div class="agree-radio-label" style="text-align: right; margin-top: 12px; margin-bottom: 15px;">
+        <label style="cursor: pointer; margin-right: 15px;"><input type="radio" name="prohibit_agree" value="yes" onchange="toggleAgreement()"> <span data-lang-key="agree-yes">동의함</span></label>
+        <label style="cursor: pointer;"><input type="radio" name="prohibit_agree" value="no" checked onchange="toggleAgreement()"> <span data-lang-key="agree-no">동의하지 않음</span></label>
+    </div>
+
+    <div class="section-title" data-lang-key="privacy-title">※ 개인정보 수집 및 활용 동의 ※</div>
+    <div class="info-box-text" data-lang-key="privacy-desc">
+        <b>[개인정보 수집 목적]</b> - 본인확인, 보험적용 등<br>
+        <b>[개인정보 수집 항목]</b> - 성명, 생년월일, 연락처, 사진 및 동영상촬영(홍보 및 보고자료 사용) 등<br>
+        <b>[개인정보 수집 기한]</b> - 가입일로부터 1년간 보유하며 별도 요청시 폐기할 수 있음.<br>
+        <b>[개인정보 수집 및 활용 동의 거부의 권리]</b> - 본 안내에 따른 개인정보 수집 및 활용에 대하여 거부 할 수 있으나, 거부시에는 보험적용 등을 받을 수 없으므로 탑승 할 수 없습니다.<br>
+        <b>[동 의]</b> - 대표자의 신청으로 탑승자 전체가 동의한 것으로 확인하며, 안전요원의 통제에 따르며 지시불이행, 지병, 개인 부주의로 인해 발생한 사고에 대해서는 책임을 묻지 않는 것을 서약합니다.
+    </div>
+    <div class="agree-radio-label" style="text-align: right; margin-top: 12px; margin-bottom: 15px;">
+        <label style="cursor: pointer; margin-right: 15px;"><input type="radio" name="privacy_agree" value="yes" onchange="toggleAgreement()"> <span data-lang-key="agree-yes">동의함</span></label>
+        <label style="cursor: pointer;"><input type="radio" name="privacy_agree" value="no" checked onchange="toggleAgreement()"> <span data-lang-key="agree-no">동의하지 않음</span></label>
+    </div>
+
+    <div class="signature-area">
+        <div class="apply-title-custom" data-lang-key="apply-title">김시민호 탑승을 신청합니다.</div>
+        
+        <div class="date-input-area">
+            <input type="text" id="year" style="width: 70px;"> <span data-lang-key="date-year">년</span> 
+            <input type="text" id="month" style="width: 50px;"> <span data-lang-key="date-month">월</span> 
+            <input type="text" id="day" style="width: 50px;"> <span data-lang-key="date-day">일</span>
+        </div>
+        
+        <div class="rep-input-area">
+            <span data-lang-key="rep-label" style="font-weight: bold;">신청인 대표(보호자)</span> : 
+            <input type="text" id="rep-name" disabled placeholder="성명 입력" lang="ko"> 
+            <span data-lang-key="sign-text">(서명)</span>
+            <canvas id="sig-canvas" width="300" height="100"></canvas>
+            <button id="clear-btn" onclick="clearSignature()" style="background:#6c757d;" disabled data-lang-key="btn-clear">서명 지우기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 1: 선박 관리 -->
+<div id="ship-modal">
+    <div class="modal-content">
+        <h3 style="margin-top: 0; color: #000; font-size: 24px;" data-lang-key="modal-title">🚢 선박 및 출발 시간 관리</h3>
+        <div id="modal-ship-list" style="margin-bottom: 15px;"></div>
+        <div style="margin-bottom: 15px;">
+            <button type="button" onclick="addModalShip()" style="background-color: #28a745; font-size: 16px;" data-lang-key="modal-add-ship">+ 선박 추가</button>
+        </div>
+        <div style="text-align: right; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+            <button type="button" onclick="saveShipManager()" style="background-color: #007bff; font-size: 18px;" data-lang-key="modal-apply">적용하기</button>
+            <button type="button" onclick="closeShipManager()" style="background-color: #6c757d; font-size: 18px;" data-lang-key="modal-close">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 2: 불러오기 -->
+<div id="load-modal">
+    <div class="modal-content">
+        <h3 style="margin-top: 0; color: #000; font-size: 24px;" data-lang-key="load-modal-title">📁 저장된 탑승 신청서 목록</h3>
+        <div style="margin-bottom: 10px; font-size: 16px; color: #555;" data-lang-key="load-modal-desc">불러올 내역을 선택하거나 컴퓨터에 저장된 JSON 파일을 직접 업로드하세요.</div>
+        
+        <div style="margin-bottom: 15px;">
+            <input type="file" id="json-file-input" accept=".json" onchange="handleFileImport(event)" style="font-size: 16px; padding: 5px; width: 100%; border: 1px solid #ccc; background: #f9f9f9;">
+        </div>
+
+        <div id="load-file-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background: #f9f9f9; margin-bottom: 15px;"></div>
+
+        <div style="text-align: right; border-top: 1px solid #ddd; padding-top: 15px;">
+            <button type="button" onclick="closeLoadModal()" style="background-color: #6c757d; font-size: 18px;" data-lang-key="modal-close">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 3: 탑승 제한(블랙리스트) 목록 관리 -->
+<div id="blacklist-modal">
+    <div class="modal-content">
+        <h3 style="margin-top: 0; color: #dc3545; font-size: 26px;">🚨 탑승 제한(블랙리스트) 목록 관리</h3>
+        <div style="margin-bottom: 12px; font-size: 16px; color: #555;">등록된 제한자 정보입니다. 현장에서 성명, 생년월일, 연락처 입력 시 경고 메시지가 표시됩니다.</div>
+        
+        <div id="blacklist-render-container" style="max-height: 350px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fff8f8; margin-bottom: 15px;"></div>
+
+        <div style="text-align: right; border-top: 1px solid #ddd; padding-top: 15px;">
+            <button type="button" onclick="closeBlacklistModal()" style="background-color: #6c757d; font-size: 18px;">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isPopupEnabled = true;
+    let isBlacklistColVisible = false;
+    let blacklistData = {}; 
+    let lastAlertTime = 0;
+
+    function closeNoticeModal() {
+        const modal = document.getElementById('notice-modal');
+        if (modal) {
+            modal.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    function openNoticeModal() {
+        const modal = document.getElementById('notice-modal');
+        if (modal) {
+            modal.style.setProperty('display', 'flex', 'important');
+        }
+    }
+
+    function refreshForm() {
+        if (confirm("정말 처음부터 다시 작성하시겠습니까? 입력된 내용이 초기화됩니다.")) {
+            resetForm();
+            if (isPopupEnabled) {
+                openNoticeModal();
+            }
+        }
+    }
+
+    function togglePopupSetting() {
+        isPopupEnabled = !isPopupEnabled;
+        const btn = document.getElementById('btn-popup-setting');
+        if (isPopupEnabled) {
+            btn.innerText = "팝업창 사용 설정 (ON)";
+            btn.style.backgroundColor = "#17a2b8";
+            alert("다음 작성 완료 시 안내 팝업창이 뜨도록 설정되었습니다.");
+        } else {
+            btn.innerText = "팝업창 사용 설정 (OFF)";
+            btn.style.backgroundColor = "#6c757d";
+            alert("다음 작성 완료 시 안내 팝업창이 뜨지 않도록 설정되었습니다.");
+        }
+        closeAllMenus();
+    }
+
+    function toggleBlacklistColumn() {
+        isBlacklistColVisible = !isBlacklistColVisible;
+        const cols = document.querySelectorAll('.blacklist-col');
+        cols.forEach(el => {
+            el.style.display = isBlacklistColVisible ? 'table-cell' : 'none';
+        });
+
+        const btnWorker = document.getElementById('btn-toggle-blacklist-worker');
+        const btnAdmin = document.getElementById('btn-toggle-blacklist-admin');
+        const labelText = isBlacklistColVisible ? "🚨 탑승제한 열 표시 (ON)" : "🚨 탑승제한 열 표시 (OFF)";
+        const bgColor = isBlacklistColVisible ? "#dc3545" : "#e67e22";
+
+        if(btnWorker) { btnWorker.innerText = labelText; btnWorker.style.backgroundColor = bgColor; }
+        if(btnAdmin) { btnAdmin.innerText = labelText; btnAdmin.style.backgroundColor = bgColor; }
+
+        closeAllMenus();
+    }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyASAWsxM_6x5iFFme8wqePiFzNytsNOF5E",
+      authDomain: "mulbitnaru930.firebaseapp.com",
+      databaseURL: "https://mulbitnaru930-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "mulbitnaru930",
+      storageBucket: "mulbitnaru930.appspot.com",
+      messagingSenderId: "563863871857",
+      appId: "1:563863871857:web:61978cb0c534959e44d6d0"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.database();
+
+    let boatManagerData = {
+        1: { name: "김시민 1호", capacity: 25, duration: 20, course: "망진나루 ↔ 진주성(촉석루)", notice: "현재 정상 운항 중입니다.", times: ["13:10", "13:50", "14:30", "15:10", "15:50", "16:30", "17:10", "18:10", "18:50", "19:30", "20:10", "20:50", "21:30", "22:10", "22:40"], seats: {}, customStatus: {} },
+        2: { name: "김시민 2호", capacity: 30, duration: 20, course: "망진나루 ↔ 진주성(촉석루)", notice: "현재 정상 운항 중입니다.", times: ["13:00", "13:40", "14:20", "15:00", "15:40", "16:20", "17:00", "18:00", "18:40", "19:20", "20:00", "20:40", "21:20", "22:00", "22:30"], seats: {}, customStatus: {} }
+    };
+
+    const baseDict = {
+        ko: {
+            pageTitle: "김시민호 탑승 신청서",
+            "worker-btn": "근무자모드 ▼", "admin-btn": "관리자모드 ▼", 
+            "adm-save": "저장", "adm-load": "불러오기", "adm-print": "인쇄", 
+            "btn-send-seat": "잔여석전송", "btn-cancel-seat": "잔여석전송취소", "btn-refresh": "🔄 새로고침",
+            "adm-ship": "선박/시간 관리", "lang-label": "🌐 언어선택 ▼",
+            "main-title": "김시민호 탑승 신청서", "sec-depart-title": "1. 김시민호 선택 및 출발 시간 선택", "th-ship-name": "선박명", "th-depart-time": "출발 시간",
+            "caution-2": "⏰ 출발시간 10분 전에 김시민호 탑승장에서 대기하여 주십시오.",
+            "passenger-list-title": "2. 김시민호 탑승자 명단", "total-price-label": "총금액", "total-count-label": "총 인원", "person-unit": "명",
+            "th-no": "  ", "th-name": "성 명", "th-birth": "생년월일(YYYYMMDD-*)", "th-phone": "연락처(11자)", "th-addr": "거주지", "th-discount": "할인(50%)", "th-exemption": "면제(100%)", "th-gender": "성 별",
+            "opt-discount-none": "해당 없음", "opt-discount-jinju": "진주시민 (50%)", "opt-discount-sancheong": "산청군민 (50%)", "opt-discount-multi": "두 자녀 이상 가정 (50%)", "opt-discount-other-exemption": "외지인 중 면제대상자 (50%)",
+            "opt-exemption-none": "해당 없음", "opt-exemption-infant": "36개월 이하 어린이 (무료)", "opt-exemption-senior": "진주시민 65세 이상 (무료)", "opt-exemption-official": "공무수행 (무료)", "opt-exemption-disabled": "등록 장애인 (중증 보호자 1인 포함)", "opt-exemption-merit": "국가/독립/5·18/참전유공자 및 유족", "opt-exemption-basic": "기초생활수급자 / 한부모가족", "opt-exemption-honor": "진주시 명예시민", "opt-exemption-etc": "기타 면제 대상자",
+            "btn-add": "+ 탑승자 추가", "btn-del": "- 탑승자 삭제",
+            "prohibit-title": "※ 김시민호 탑승 금지 및 제한 ※",
+            "prohibit-desc": "<b>1. 음주자(주취자) 및 정신질환자 탑승금지<br>2. 중학생 이하는 보호자와 같이 탑승 가능<br>3. 반려동물 탑승 금지<br>4. 그 외 안전요원의 판단에 따라 제한될 수 있습니다.</b>",
+            "privacy-title": "※ 개인정보 수집 및 활용 동의 ※",
+            "privacy-desc": "<b>[개인정보 수집 목적]</b> - 본인확인, 보험적용 등",
+            "agree-yes": "동의함", "agree-no": "동의하지 않음",
+            "apply-title": "김시민호 탑승을 신청합니다.",
+            "date-year": "년", "date-month": "월", "date-day": "일",
+            "rep-label": "신청인 대표(보호자)", "sign-text": "(서명)", "btn-clear": "서명 지우기",
+            "modal-title": "🚢 선박 및 시간 관리",
+            "modal-add-ship": "+ 선박 추가", "modal-apply": "적용하기", "modal-close": "닫기",
+            "load-modal-title": "📁 저장된 탑승 신청서 목록",
+            "load-modal-desc": "불러올 내역을 선택하거나 컴퓨터에 저장된 JSON 파일을 직접 업로드하세요.",
+            "gender-male": "남", "gender-female": "여",
+            "placeholder-name": "성명", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "거주지"
+        },
+        en: { pageTitle: "Kim Simin Ferry Boarding Application" },
+        zh: { pageTitle: "金时敏号登船申请书" },
+        zh_tw: { pageTitle: "金時敏號登船申請書" },
+        ja: { pageTitle: "キム・シミン号 乗船申込書" },
+        vi: { pageTitle: "Đơn xin lên tàu Kim Simin" },
+        th: { pageTitle: "ใบ신청การขึ้นเรือ김시민" }
+    };
+
+    const countryLanguages = [
+        { code: "ko", flag: "🇰🇷", name: "대한민국 (한국어)" },
+        { code: "en", flag: "🇺🇸", name: "미국 (영어)" },
+        { code: "zh", flag: "🇨🇳", name: "중국 (중국어 간체)" },
+        { code: "zh_tw", flag: "🇭🇰", name: "홍콩/대만 (중국어 번체)" },
+        { code: "ja", flag: "🇯🇵", name: "일본 (일본어)" },
+        { code: "vi", flag: "🇻🇳", name: "베트남 (베트남어)" },
+        { code: "th", flag: "🇹🇭", name: "태국 (태국어)" }
+    ];
+
+    function initLanguageMenu() {
+        const langMenu = document.getElementById('langMenu');
+        if (!langMenu) return;
+        let html = '';
+        countryLanguages.forEach(lang => {
+            if (!baseDict[lang.code]) baseDict[lang.code] = baseDict['en'];
+            html += `<button type="button" onclick="changeLanguage('${lang.code}')" style="width:100%; text-align:left; background:#fff; color:#333; border:1px solid #ddd; padding:8px; cursor:pointer; margin:2px 0; border-radius:3px; font-size: 16px;">${lang.flag} ${lang.name}</button>`;
+        });
+        langMenu.innerHTML = html;
+    }
+
+    function getTranslation(key) {
+        if (baseDict[currentLang] && baseDict[currentLang][key]) return baseDict[currentLang][key];
+        return baseDict['ko'][key] || key;
+    }
+
+    let currentLang = 'ko';
+
+    function changeLanguage(lang) {
+        currentLang = baseDict[lang] ? lang : 'ko';
+        const dict = baseDict[currentLang];
+        document.getElementById("page-title").innerText = dict.pageTitle || baseDict['ko'].pageTitle;
+        document.querySelectorAll("[data-lang-key]").forEach(el => {
+            const key = el.getAttribute("data-lang-key");
+            el.innerHTML = getTranslation(key);
+        });
+        updatePlaceholdersAndLabels();
+        closeAllMenus();
+        renderDepartureTimes();
+    }
+
+    function updatePlaceholdersAndLabels() {
+        document.querySelectorAll(".p-name").forEach(el => el.placeholder = getTranslation("placeholder-name"));
+        document.querySelectorAll(".p-birth").forEach(el => el.placeholder = getTranslation("placeholder-birth"));
+        document.querySelectorAll(".p-phone").forEach(el => el.placeholder = getTranslation("placeholder-phone"));
+        document.querySelectorAll(".p-addr").forEach(el => el.placeholder = getTranslation("placeholder-addr"));
+        document.querySelectorAll(".gender-male-label").forEach(el => el.innerText = getTranslation("gender-male"));
+        document.querySelectorAll(".gender-female-label").forEach(el => el.innerText = getTranslation("gender-female"));
+    }
+
+    function toggleMenu(menuId) {
+        ['workerMenu', 'adminMenu', 'langMenu'].forEach(id => {
+            const el = document.getElementById(id);
+            if (id === menuId) el.classList.toggle("mode-content-show");
+            else { el.classList.remove("mode-content-show"); el.classList.remove("lang-show"); }
+        });
+    }
+
+    function closeAllMenus() {
+        ['workerMenu', 'adminMenu', 'langMenu'].forEach(id => document.getElementById(id).classList.remove("mode-content-show", "lang-show"));
+    }
+
+    window.addEventListener('click', function(e) {
+        if (!e.target.closest('.mode-dropdown') && !e.target.closest('.lang-dropdown')) closeAllMenus();
+    });
+
+    function initFirebaseListener() {
+        db.ref('namgang/boatData').on('value', (snapshot) => {
+            const val = snapshot.val();
+            if (val) boatManagerData = val;
+            renderDepartureTimes();
+        }, (error) => {
+            console.warn("Firebase 실시간 연동 실패 (오프라인 모드 작동):", error.message);
+        });
+
+        db.ref('namgang/blacklist').on('value', (snapshot) => {
+            blacklistData = snapshot.val() || {};
+            localStorage.setItem('kimSiminBlacklist', JSON.stringify(blacklistData));
+            checkAllRowsForBlacklist();
+        });
+    }
+
+    function verifyPassengerBlacklist(inputEl, showAlert = false) {
+        const row = inputEl.closest('tr');
+        if (!row) return;
+
+        const nameInput = row.querySelector('.p-name');
+        const birthInput = row.querySelector('.p-birth');
+        const phoneInput = row.querySelector('.p-phone');
+        const chkBox = row.querySelector('.p-blacklist-chk');
+
+        const name = nameInput ? nameInput.value.trim() : "";
+        const rawBirth = birthInput ? birthInput.value.trim().replace(/[^0-9]/g, '') : "";
+        const phone = phoneInput ? phoneInput.value.trim().replace(/[^0-9]/g, '') : "";
+
+        const localList = JSON.parse(localStorage.getItem('kimSiminBlacklist') || '{}');
+        const targetList = Object.keys(blacklistData).length > 0 ? blacklistData : localList;
+
+        let foundEntry = null;
+        Object.keys(targetList).forEach(key => {
+            const item = targetList[key];
+            if (item.name === name && (item.birthRaw === rawBirth || item.phone === phone)) {
+                foundEntry = item;
+            }
+        });
+
+        if (foundEntry && name !== "" && (rawBirth.length >= 8 || phone.length >= 10)) {
+            nameInput.classList.add('blacklisted-user');
+            birthInput.classList.add('blacklisted-user');
+            phoneInput.classList.add('blacklisted-user');
+            if(chkBox) chkBox.checked = true;
+
+            const currentTime = Date.now();
+            if (showAlert && (currentTime - lastAlertTime > 3000)) {
+                lastAlertTime = currentTime;
+                alert("관계자에게 문의하세요");
+            }
+        } else {
+            nameInput.classList.remove('blacklisted-user');
+            birthInput.classList.remove('blacklisted-user');
+            phoneInput.classList.remove('blacklisted-user');
+        }
+    }
+
+    function checkAllRowsForBlacklist() {
+        document.querySelectorAll("#passenger-tbody tr").forEach(tr => {
+            const nameEl = tr.querySelector('.p-name');
+            if (nameEl) verifyPassengerBlacklist(nameEl, false);
+        });
+    }
+
+    function toggleBlacklistStatus(chkBox) {
+        const row = chkBox.closest('tr');
+        const nameInput = row.querySelector('.p-name');
+        const birthInput = row.querySelector('.p-birth');
+        const phoneInput = row.querySelector('.p-phone');
+
+        const name = nameInput.value.trim();
+        const birthRaw = birthInput.value.trim().replace(/[^0-9]/g, '');
+        const phone = phoneInput.value.trim().replace(/[^0-9]/g, '');
+
+        if (chkBox.checked) {
+            if (name === "") {
+                alert("블랙리스트로 등록할 탑승자의 성명을 먼저 입력해주세요.");
+                chkBox.checked = false;
+                return;
+            }
+
+            const reason = prompt(`'${name}' 님을 탑승 제한(블랙리스트) 목록에 등록합니다.\n제한 사유를 입력하세요:`, "안전요원 통제 불응 및 소란");
+            if (reason === null) { chkBox.checked = false; return; }
+
+            const key = `${name}_${birthRaw || phone || Date.now()}`;
+            const entry = {
+                name, birthRaw, phone,
+                reason: reason.trim() || "사유 미입력",
+                date: new Date().toLocaleDateString()
+            };
+
+            db.ref(`namgang/blacklist/${key}`).set(entry).then(() => {
+                alert(`'${name}' 님이 탑승 제한 목록에 등록되었습니다.`);
+                verifyPassengerBlacklist(nameInput, false);
+            });
+        } else {
+            const key = `${name}_${birthRaw || phone}`;
+            db.ref(`namgang/blacklist/${key}`).remove().then(() => {
+                alert(`'${name}' 님의 탑승 제한 설정이 해제되었습니다.`);
+                nameInput.classList.remove('blacklisted-user');
+                birthInput.classList.remove('blacklisted-user');
+                phoneInput.classList.remove('blacklisted-user');
+            });
+        }
+    }
+
+    function openBlacklistModal() {
+        closeAllMenus();
+        renderBlacklistModal();
+        document.getElementById("blacklist-modal").style.display = "block";
+    }
+
+    function closeBlacklistModal() {
+        document.getElementById("blacklist-modal").style.display = "none";
+    }
+
+    function renderBlacklistModal() {
+        const container = document.getElementById("blacklist-render-container");
+        const keys = Object.keys(blacklistData);
+        if (keys.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">등록된 탑승 제한자가 없습니다.</div>`;
+            return;
+        }
+
+        let html = '<table style="width:100%; border:1px solid #ccc;"><tr style="background:#f2f2f2;"><th>성명</th><th>생년월일/연락처</th><th>등록 사유</th><th>등록일</th><th>관리</th></tr>';
+        keys.forEach(k => {
+            const item = blacklistData[k];
+            html += `<tr>
+                <td><b>${item.name}</b></td>
+                <td>${item.birthRaw || item.phone || '-'}</td>
+                <td>${item.reason || '-'}</td>
+                <td>${item.date || '-'}</td>
+                <td><button type="button" onclick="removeBlacklistEntry('${k}')" style="background-color:#dc3545; font-size:14px; padding:4px 8px;">제한 해제</button></td>
+            </tr>`;
+        });
+        html += '</table>';
+        container.innerHTML = html;
+    }
+
+    function removeBlacklistEntry(key) {
+        if (confirm("해당 승객의 탑승 제한을 해제하시겠습니까?")) {
+            db.ref(`namgang/blacklist/${key}`).remove().then(() => {
+                renderBlacklistModal();
+            });
+        }
+    }
+
+    function renderDepartureTimes() {
+        const tbody = document.getElementById("departure-tbody");
+        tbody.innerHTML = "";
+        const headerTr = document.createElement("tr");
+        headerTr.innerHTML = `<th style="width: 15%;">${getTranslation("th-ship-name")}</th><th style="width: 85%;">${getTranslation("th-depart-time")}</th>`;
+        tbody.appendChild(headerTr);
+
+        const now = new Date();
+        let firstAvailableRadio = null;
+        let minDiffTime = Infinity;
+
+        Object.keys(boatManagerData).forEach((id) => {
+            const ship = boatManagerData[id];
+            const times = ship.times || [];
+            let timesHtml = '';
+            
+            times.forEach(t => {
+                const capacity = ship.capacity || 25;
+                const booked = (ship.seats && ship.seats[t]) || 0;
+                const remain = capacity - booked;
+                const customStat = (ship.customStatus && ship.customStatus[t]) || "auto";
+
+                const [tH, tM] = t.split(':').map(Number);
+                const flightTime = new Date();
+                flightTime.setHours(tH, tM, 0, 0);
+                const diffMins = (flightTime.getTime() - now.getTime()) / 60000;
+
+                let isDisabled = false, statusLabel = "";
+                if (customStat !== "auto") {
+                    if (customStat.includes("중지") || customStat === "운항없음" || customStat.includes("점검")) {
+                        isDisabled = true; statusLabel = ` [${customStat}]`;
+                    } else if (customStat.includes("마감")) {
+                        isDisabled = true; statusLabel = ` [${customStat}]`;
+                    }
+                } else {
+                    if (diffMins < -30) { isDisabled = true; statusLabel = " [운항종료]"; }
+                    else if (remain <= 0) { isDisabled = true; statusLabel = " [매진]"; }
+                }
+
+                const radioValue = `${id}_${t}`;
+                if (!isDisabled && diffMins >= -30) {
+                    if (diffMins >= 0 && diffMins < minDiffTime) { minDiffTime = diffMins; firstAvailableRadio = radioValue; }
+                    else if (!firstAvailableRadio && diffMins < 0) { firstAvailableRadio = radioValue; }
+                }
+
+                if (isDisabled) {
+                    timesHtml += `<label class="disabled-time-label" style="margin-right: 22px; display:inline-block; margin-bottom:8px;"><input type="radio" name="departure_time" value="${radioValue}" disabled> ${t} (<span style="color: #999;">${remain <= 0 ? '매진' : '마감'}</span>)${statusLabel}</label>`;
+                } else {
+                    let remainColor = remain <= 5 ? '#d9534f' : '#0040ff';
+                    timesHtml += `<label style="margin-right: 22px; display:inline-block; margin-bottom:8px; cursor:pointer;"><input type="radio" name="departure_time" value="${radioValue}"> ${t} (<span style="color: ${remainColor}; font-weight: bold;">${remain}석</span>)</label>`;
+                }
+            });
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td style="width: 15%; font-weight: bold;">${ship.name || ('선박 ' + id)}</td><td style="width: 85%; text-align: left; padding-left: 20px;">${timesHtml}</td>`;
+            tbody.appendChild(tr);
+        });
+
+        if (!document.querySelector('input[name="departure_time"]:checked') && firstAvailableRadio) {
+            const targetRadio = document.querySelector(`input[name="departure_time"][value="${firstAvailableRadio}"]`);
+            if (targetRadio) targetRadio.checked = true;
+        }
+    }
+
+    function openShipManager() { closeAllMenus(); renderModalShips(); document.getElementById("ship-modal").style.display = "block"; }
+    function renderModalShips() {
+        const modalList = document.getElementById("modal-ship-list");
+        modalList.innerHTML = "";
+        Object.keys(boatManagerData).forEach((id, idx) => {
+            const ship = boatManagerData[id];
+            modalList.innerHTML += `
+                <div style="background: #f9f9f9; border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 5px;">
+                    <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+                        <input type="text" value="${ship.name}" id="m-name-${idx}" style="width: 180px; font-weight:bold; font-size: 17px;" placeholder="선박명">
+                        <button type="button" onclick="removeModalShip('${id}')" style="background-color: #dc3545; padding: 6px 12px; font-size: 15px;">선박 삭제</button>
+                    </div>
+                    <div>
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">출발 시간 목록:</div>
+                        <div id="m-times-container-${idx}" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+                            ${(ship.times || []).map(t => `<div style="display: flex; align-items: center; gap: 3px;"><input type="text" value="${t}" class="m-time-input-${idx}" style="width: 80px; font-size: 16px; text-align: center;"><button type="button" onclick="this.parentElement.remove()" style="background: #6c757d; border:none; color:#fff; font-size:14px; padding: 4px 8px; cursor:pointer;">×</button></div>`).join('')}
+                        </div>
+                        <button type="button" onclick="addModalTime(${idx})" style="background-color: #17a2b8; font-size: 14px; padding: 6px 12px;">+ 시간 추가</button>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function addModalShip() {
+        boatManagerData[Date.now().toString()] = { name: "새 선박", capacity: 25, duration: 20, course: "망진나루 ↔ 진주성", notice: "정상 운항 중", times: ["10:00", "11:00"], seats: {}, customStatus: {} };
+        renderModalShips();
+    }
+    function removeModalShip(id) {
+        if (Object.keys(boatManagerData).length <= 1) { alert("최소 1개의 선박은 유지되어야 합니다."); return; }
+        delete boatManagerData[id];
+        renderModalShips();
+    }
+    function addModalTime(idx) {
+        const container = document.getElementById(`m-times-container-${idx}`);
+        const div = document.createElement("div");
+        div.style.display = "flex"; div.style.alignItems = "center"; div.style.gap = "3px";
+        div.innerHTML = `<input type="text" value="00:00" class="m-time-input-${idx}" style="width: 80px; font-size: 16px; text-align: center;"><button type="button" onclick="this.parentElement.remove()" style="background: #6c757d; border:none; color:#fff; font-size:14px; padding: 4px 8px; cursor:pointer;">×</button>`;
+        container.appendChild(div);
+    }
+    function closeShipManager() { document.getElementById("ship-modal").style.display = "none"; }
+    function saveShipManager() {
+        let updatedData = {};
+        Object.keys(boatManagerData).forEach((oldId, idx) => {
+            const nameInput = document.getElementById(`m-name-${idx}`);
+            if (nameInput) {
+                let sTimes = [];
+                document.querySelectorAll(`.m-time-input-${idx}`).forEach(ti => { if(ti.value.trim() !== "") sTimes.push(ti.value.trim()); });
+                updatedData[oldId] = { ...boatManagerData[oldId], name: nameInput.value.trim() || "김시민호", times: sTimes };
+            }
+        });
+        boatManagerData = updatedData;
+        db.ref('namgang/boatData').set(boatManagerData).then(() => {
+            alert('선박 및 시간 정보가 업데이트되었습니다.');
+            closeShipManager();
+            renderDepartureTimes();
+        }).catch((err) => { alert('저장 중 오류 발생: ' + err.message); });
+    }
+
+    function formatBirthInput(inputEl) {
+        let raw = inputEl.value.replace(/[^0-9]/g, '');
+        if (raw.length > 8) {
+            inputEl.value = raw.substring(0, 8) + '-' + raw.substring(8, 9);
+        } else {
+            inputEl.value = raw;
+        }
+
+        const row = inputEl.closest('tr');
+        if (row && raw.length >= 9) {
+            const year = parseInt(raw.substring(0, 4), 10);
+            const month = parseInt(raw.substring(4, 6), 10);
+            const day = parseInt(raw.substring(6, 8), 10);
+            const genderDigit = raw.charAt(8);
+
+            const isValidDate = (month >= 1 && month <= 12) && (day >= 1 && day <= 31) && (year >= 1900 && year <= new Date().getFullYear());
+            const isValidGenderCode = ['1', '2', '3', '4', '5', '6', '7', '8'].includes(genderDigit);
+
+            if (!isValidDate || !isValidGenderCode) {
+                inputEl.classList.add('input-error');
+            } else {
+                inputEl.classList.remove('input-error');
+                const maleRadio = row.querySelector('input[value="male"]');
+                const femaleRadio = row.querySelector('input[value="female"]');
+                if (['1', '3', '5', '7'].includes(genderDigit) && maleRadio) maleRadio.checked = true;
+                else if (['2', '4', '6', '8'].includes(genderDigit) && femaleRadio) femaleRadio.checked = true;
+            }
+        } else if (raw.length > 0) {
+            inputEl.classList.add('input-error');
+        } else {
+            inputEl.classList.remove('input-error');
+        }
+        checkAndApplyExemption(inputEl);
+        verifyPassengerBlacklist(inputEl, false);
+    }
+
+    function formatPhoneInput(inputEl) {
+        let raw = inputEl.value.replace(/[^0-9]/g, '');
+        if (raw.length > 11) raw = raw.substring(0, 11);
+
+        if (raw.length <= 3) {
+            inputEl.value = raw;
+        } else if (raw.length <= 7) {
+            inputEl.value = raw.substring(0, 3) + '-' + raw.substring(3);
+        } else {
+            inputEl.value = raw.substring(0, 3) + '-' + raw.substring(3, 7) + '-' + raw.substring(7);
+        }
+
+        if (raw.length > 0 && raw.length !== 11) {
+            inputEl.classList.add('input-error');
+        } else {
+            inputEl.classList.remove('input-error');
+        }
+
+        checkAndApplyExemption(inputEl);
+        verifyPassengerBlacklist(inputEl, false);
+    }
+
+    function checkAndApplyExemption(inputEl) {
+        const row = inputEl.closest('tr');
+        if (!row) return;
+
+        const nameInput = row.querySelector('.p-name');
+        const birthInput = row.querySelector('.p-birth');
+        const phoneInput = row.querySelector('.p-phone');
+        const addrInput = row.querySelector('.p-addr');
+        const discountSelect = row.querySelector('.p-discount');
+        const exemptionSelect = row.querySelector('.p-exemption');
+
+        if (!nameInput || !birthInput || !phoneInput || !addrInput || !discountSelect || !exemptionSelect) return;
+
+        if (addrInput.value.trim() === "" && (nameInput.value.trim() !== "" || birthInput.value.trim() !== "")) {
+            addrInput.classList.add('input-error');
+        } else {
+            addrInput.classList.remove('input-error');
+        }
+
+        const rawBirth = birthInput.value.trim().replace(/[^0-9]/g, '');
+        const rawPhone = phoneInput.value.trim().replace(/[^0-9]/g, '');
+        const isDataValid = (nameInput.value.trim() !== "") && (rawBirth.length >= 9) && (rawPhone.length === 11) && (addrInput.value.trim() !== "");
+
+        if (!isDataValid) {
+            discountSelect.disabled = false;
+            exemptionSelect.disabled = false;
+            updateTotals();
+            return;
+        }
+
+        discountSelect.disabled = false; 
+        exemptionSelect.disabled = false;
+
+        const addrVal = addrInput.value.trim();
+        const isJinjuResident = /진주|jinju/i.test(addrVal);
+        const isSancheongResident = /산청|sancheong/i.test(addrVal);
+
+        const year = parseInt(rawBirth.substring(0, 4), 10);
+        const mm = parseInt(rawBirth.substring(4, 6), 10) - 1;
+        const dd = parseInt(rawBirth.substring(6, 8), 10);
+        const birthDate = new Date(year, mm, dd);
+
+        if (!isNaN(birthDate.getTime())) {
+            const currentDate = new Date();
+            const limit36MonthsDate = new Date(year + 3, mm, dd);
+            
+            if (currentDate <= limit36MonthsDate) {
+                exemptionSelect.value = 'infant';
+                discountSelect.value = 'none';
+            } else {
+                let age = currentDate.getFullYear() - year;
+                const mDiff = currentDate.getMonth() - mm;
+                if (mDiff < 0 || (mDiff === 0 && currentDate.getDate() < dd)) age--;
+
+                if (isJinjuResident && age >= 65) {
+                    exemptionSelect.value = 'senior';
+                    discountSelect.value = 'none';
+                } else if (isJinjuResident) {
+                    if (discountSelect.value === 'none') discountSelect.value = 'jinju';
+                } else if (isSancheongResident) {
+                    if (discountSelect.value === 'none') discountSelect.value = 'sancheong';
+                }
+            }
+        }
+        updateTotals();
+    }
+
+    function addPassengerRow(data = null) {
+        const tbody = document.getElementById("passenger-tbody");
+        const rowIndex = tbody.querySelectorAll("tr").length + 1;
+        const tr = document.createElement("tr");
+        const colStyle = isBlacklistColVisible ? 'display: table-cell;' : 'display: none;';
+        
+        tr.innerHTML = `
+            <td class="row-num" style="font-weight: bold;"><b>${rowIndex}</b></td>
+            <td><input type="text" class="p-name" value="${data ? data.name : ''}" placeholder="${getTranslation("placeholder-name")}" oninput="this.value = this.value.replace(/[0-9]/g, ''); checkAndApplyExemption(this); updateTotals(); checkFirstPassengerToRep(this); removeErrorStyle(this); verifyPassengerBlacklist(this, false);" onblur="verifyPassengerBlacklist(this, true);"></td>
+            <td><input type="tel" class="p-birth" value="${data ? data.birth : ''}" inputmode="numeric" maxlength="10" placeholder="${getTranslation("placeholder-birth")}" oninput="formatBirthInput(this); updateTotals();" onblur="checkAndApplyExemption(this); verifyPassengerBlacklist(this, true);"></td>
+            <td><input type="tel" class="p-phone" value="${data ? data.phone : ''}" inputmode="numeric" maxlength="13" placeholder="${getTranslation("placeholder-phone")}" oninput="formatPhoneInput(this);" onblur="checkAndApplyExemption(this); verifyPassengerBlacklist(this, true);"></td>
+            <td><input type="text" class="p-addr" value="${data ? data.addr : ''}" placeholder="${getTranslation("placeholder-addr")}" oninput="this.value = this.value.replace(/[0-9]/g, ''); checkAndApplyExemption(this);" onblur="checkAndApplyExemption(this)"></td>
+            <td class="benefit-cell">
+                <select class="p-discount" onchange="handleBenefitChange(this, 'discount')">
+                    <option value="none" ${data && data.discount === 'none' ? 'selected' : ''}>${getTranslation("opt-discount-none")}</option>
+                    <option value="jinju" ${data && data.discount === 'jinju' ? 'selected' : ''}>${getTranslation("opt-discount-jinju")}</option>
+                    <option value="sancheong" ${data && data.discount === 'sancheong' ? 'selected' : ''}>${getTranslation("opt-discount-sancheong")}</option>
+                    <option value="multi" ${data && data.discount === 'multi' ? 'selected' : ''}>${getTranslation("opt-discount-multi")}</option>
+                    <option value="other_exemption" ${data && data.discount === 'other_exemption' ? 'selected' : ''}>${getTranslation("opt-discount-other-exemption")}</option>
+                </select>
+            </td>
+            <td class="benefit-cell">
+                <select class="p-exemption" onchange="handleBenefitChange(this, 'exemption')">
+                    <option value="none" ${data && data.exemption === 'none' ? 'selected' : ''}>${getTranslation("opt-exemption-none")}</option>
+                    <option value="infant" ${data && data.exemption === 'infant' ? 'selected' : ''}>${getTranslation("opt-exemption-infant")}</option>
+                    <option value="senior" ${data && data.exemption === 'senior' ? 'selected' : ''}>${getTranslation("opt-exemption-senior")}</option>
+                    <option value="official" ${data && data.exemption === 'official' ? 'selected' : ''}>${getTranslation("opt-exemption-official")}</option>
+                    <option value="disabled" ${data && data.exemption === 'disabled' ? 'selected' : ''}>${getTranslation("opt-exemption-disabled")}</option>
+                    <option value="merit" ${data && data.exemption === 'merit' ? 'selected' : ''}>${getTranslation("opt-exemption-merit")}</option>
+                    <option value="basic" ${data && data.exemption === 'basic' ? 'selected' : ''}>${getTranslation("opt-exemption-basic")}</option>
+                    <option value="honor" ${data && data.exemption === 'honor' ? 'selected' : ''}>${getTranslation("opt-exemption-honor")}</option>
+                    <option value="etc" ${data && data.exemption === 'etc' ? 'selected' : ''}>${getTranslation("opt-exemption-etc")}</option>
+                </select>
+            </td>
+            <td>
+                <span class="gender-male-label">${getTranslation("gender-male")}</span><input type="radio" name="gender_${rowIndex}" value="male" style="margin: 0 2px; transform: scale(1.1);" ${data && data.gender === 'male' ? 'checked' : ''}> 
+                <span class="gender-female-label">${getTranslation("gender-female")}</span><input type="radio" name="gender_${rowIndex}" value="female" style="margin: 0 2px; transform: scale(1.1);" ${data && data.gender === 'female' ? 'checked' : ''}>
+            </td>
+            <td class="blacklist-col" style="${colStyle}">
+                <label class="blacklist-checkbox-label">
+                    <input type="checkbox" class="p-blacklist-chk" onchange="toggleBlacklistStatus(this)"> 제한
+                </label>
+            </td>
+        `;
+        tbody.appendChild(tr);
+        checkAndApplyExemption(tr.querySelector('.p-name'));
+        reindexRows();
+        updateTotals();
+    }
+
+    function removeErrorStyle(el) { el.classList.remove('input-error'); }
+    function checkFirstPassengerToRep(inputEl) {
+        const rows = document.querySelectorAll("#passenger-tbody tr");
+        if (rows.length > 0 && rows[0].contains(inputEl)) {
+            const repInput = document.getElementById('rep-name');
+            if(repInput && !repInput.disabled) repInput.value = inputEl.value;
+        }
+    }
+    
+    function handleBenefitChange(selectElement, type) {
+        const row = selectElement.closest('tr');
+        const discountSel = row.querySelector('.p-discount');
+        const exemptionSel = row.querySelector('.p-exemption');
+
+        if (type === 'discount' && discountSel.value !== 'none') {
+            exemptionSel.value = 'none';
+        } else if (type === 'exemption' && exemptionSel.value !== 'none') {
+            discountSel.value = 'none';
+        }
+        updateTotals();
+    }
+
+    function removeLastPassengerRow() {
+        const tbody = document.getElementById("passenger-tbody");
+        const rows = tbody.querySelectorAll("tr");
+        if (rows.length > 1) { tbody.removeChild(rows[rows.length - 1]); reindexRows(); updateTotals(); }
+        else { alert('최소 1명의 탑승자 정보는 유지되어야 합니다.'); }
+    }
+
+    function validateFormBeforeAction() {
+        document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+        let isValidPassenger = false, hasError = false, errorMsg = "";
+
+        document.querySelectorAll("#passenger-tbody tr").forEach((tr, index) => {
+            const name = tr.querySelector('.p-name').value.trim();
+            const birth = tr.querySelector('.p-birth').value.trim();
+            const phone = tr.querySelector('.p-phone').value.trim();
+            const addr = tr.querySelector('.p-addr').value.trim();
+            const rawBirth = birth.replace(/[^0-9]/g, '');
+            const rawPhone = phone.replace(/[^0-9]/g, '');
+
+            if (name !== "" || birth !== "" || phone !== "" || addr !== "") {
+                if (name === "") { hasError = true; tr.querySelector('.p-name').classList.add('input-error'); errorMsg = `${index + 1}번째 탑승자의 성명을 입력해주세요.`; }
+                else if (rawBirth.length < 9) { hasError = true; tr.querySelector('.p-birth').classList.add('input-error'); errorMsg = `${index + 1}번째 탑승자의 생년월일 형식(YYYYMMDD-*)을 올바르게 입력해주세요.`; }
+                else if (rawPhone.length !== 11) { hasError = true; tr.querySelector('.p-phone').classList.add('input-error'); errorMsg = `${index + 1}번째 탑승자의 연락처 11자리를 올바르게 입력해주세요.`; }
+                else if (addr === "") { hasError = true; tr.querySelector('.p-addr').classList.add('input-error'); errorMsg = `${index + 1}번째 탑승자의 거주지를 입력해주세요.`; }
+                else { isValidPassenger = true; }
+            }
+        });
+
+        if (!isValidPassenger && !hasError) { alert('등록된 탑승자 정보가 없습니다.'); return false; }
+        if (hasError) { alert(errorMsg); return false; }
+
+        const prohibitAgree = document.querySelector('input[name="prohibit_agree"]:checked');
+        const privacyAgree = document.querySelector('input[name="privacy_agree"]:checked');
+        if (!prohibitAgree || prohibitAgree.value !== 'yes' || !privacyAgree || privacyAgree.value !== 'yes') {
+            alert('모든 약관에 "동의함"을 체크하셔야 합니다.'); return false;
+        }
+        return true;
+    }
+
+    function askResetFormAfterAction(successMsg) {
+        alert(successMsg);
+        resetForm();
+        if (isPopupEnabled) {
+            openNoticeModal();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById("passenger-tbody").innerHTML = "";
+        addPassengerRow(); addPassengerRow();
+        document.querySelector('input[name="prohibit_agree"][value="no"]').checked = true;
+        document.querySelector('input[name="privacy_agree"][value="no"]').checked = true;
+        toggleAgreement();
+        document.getElementById('rep-name').value = '';
+        clearSignature();
+    }
+
+    function performAutoSave() {
+        let repName = document.getElementById('rep-name').value.trim();
+        let selectedShipName = "선박미선택", selectedTime = "시간미선택";
+        const selectedRadio = document.querySelector('input[name="departure_time"]:checked');
+        if (selectedRadio) {
+            const [boatId, timeVal] = selectedRadio.value.split('_');
+            if (boatManagerData[boatId]) selectedShipName = boatManagerData[boatId].name;
+            selectedTime = timeVal;
+        }
+
+        const sigImage = canvas.toDataURL("image/png");
+
+        const formData = {
+            repName, shipName: selectedShipName, departTime: selectedTime,
+            year: document.getElementById('year').value,
+            month: document.getElementById('month').value,
+            day: document.getElementById('day').value,
+            sigImage: sigImage,
+            passengers: []
+        };
+
+        document.querySelectorAll("#passenger-tbody tr").forEach(tr => {
+            const name = tr.querySelector('.p-name').value;
+            if (name.trim() !== "") {
+                const maleRadio = tr.querySelector('input[value="male"]');
+                formData.passengers.push({
+                    name, birth: tr.querySelector('.p-birth').value,
+                    phone: tr.querySelector('.p-phone').value,
+                    addr: tr.querySelector('.p-addr').value,
+                    discount: tr.querySelector('.p-discount').value,
+                    exemption: tr.querySelector('.p-exemption').value,
+                    gender: maleRadio && maleRadio.checked ? 'male' : 'female'
+                });
+            }
+        });
+
+        let savedList = JSON.parse(localStorage.getItem('kimSiminAppList') || '[]');
+        savedList.unshift({ keyName: `${repName}_${selectedShipName}_${selectedTime}`, dateStr: `${formData.year}-${formData.month}-${formData.day}`, data: formData });
+        if (savedList.length > 20) savedList.pop();
+        localStorage.setItem('kimSiminAppList', JSON.stringify(savedList));
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(formData, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `${repName}_${selectedShipName}_${selectedTime}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function sendRemainingSeats() {
+        if (!validateFormBeforeAction()) return;
+        const selectedRadio = document.querySelector('input[name="departure_time"]:checked');
+        if (!selectedRadio) { alert('선박 및 출발 시간을 선택해주세요.'); return; }
+
+        const [boatId, timeVal] = selectedRadio.value.split('_');
+        const count = parseInt(document.getElementById("total-count").innerText, 10);
+        if (count === 0) { alert('전송할 탑승인원이 없습니다.'); return; }
+
+        const seatRef = db.ref(`namgang/boatData/${boatId}/seats/${timeVal}`);
+        seatRef.transaction((currentBooked) => {
+            return (currentBooked || 0) + count;
+        }, (error, committed) => {
+            if (error) {
+                alert('서버 통신 실패 (인터넷 연결을 확인하세요). 작성 내용이 로컬에 임시 저장됩니다.');
+                performAutoSave();
+            } else if (committed) {
+                performAutoSave();
+                closeAllMenus();
+                askResetFormAfterAction(`탑승 인원(${count}명)이 반영되었으며 신청서가 저장 및 다운로드되었습니다.`);
+            }
+        });
+    }
+
+    function cancelRemainingSeats() {
+        if (!validateFormBeforeAction()) return;
+        const selectedRadio = document.querySelector('input[name="departure_time"]:checked');
+        if (!selectedRadio) { alert('선박 및 출발 시간을 선택해주세요.'); return; }
+
+        const [boatId, timeVal] = selectedRadio.value.split('_');
+        const count = parseInt(document.getElementById("total-count").innerText, 10);
+        if (count === 0) { alert('취소할 탑승인원이 없습니다.'); return; }
+
+        db.ref(`namgang/boatData/${boatId}/seats/${timeVal}`).transaction((currentBooked) => {
+            const nextVal = (currentBooked || 0) - count;
+            return nextVal < 0 ? 0 : nextVal;
+        }, (error, committed) => {
+            if (error) { alert('통신 오류 발생: ' + error.message); }
+            else if (committed) { closeAllMenus(); askResetFormAfterAction(`잔여석 전송이 취소되어 인원(${count}명)이 복구되었습니다.`); }
+        });
+    }
+
+    function reindexRows() {
+        document.querySelectorAll("#passenger-tbody tr").forEach((tr, index) => {
+            const numCell = tr.querySelector(".row-num");
+            if (numCell) numCell.innerHTML = `<b>${index + 1}</b>`;
+            tr.querySelectorAll('input[type="radio"]').forEach(r => { r.name = `gender_${index + 1}`; });
+        });
+    }
+
+    function updateTotals() {
+        let count = 0, totalPrice = 0;
+        document.querySelectorAll("#passenger-tbody tr").forEach(tr => {
+            const nameInput = tr.querySelector(".p-name");
+            if (nameInput && nameInput.value.trim() !== "") {
+                count++;
+                const exemptionSelect = tr.querySelector(".p-exemption");
+                const discountSelect = tr.querySelector(".p-discount");
+                
+                const hasExemption = exemptionSelect && exemptionSelect.value !== "none";
+                const hasDiscount = discountSelect && discountSelect.value !== "none";
+
+                if (hasExemption) {
+                    totalPrice += 0;
+                } else if (hasDiscount) {
+                    totalPrice += 4000;
+                } else {
+                    totalPrice += 8000;
+                }
+            }
+        });
+        document.getElementById("total-count").innerText = count;
+        document.getElementById("total-price").innerText = totalPrice.toLocaleString();
+    }
+
+    function toggleAgreement() {
+        const isAllAgreed = document.querySelector('input[name="prohibit_agree"]:checked')?.value === 'yes' && document.querySelector('input[name="privacy_agree"]:checked')?.value === 'yes';
+        const repNameInput = document.getElementById('rep-name');
+        const canvasEl = document.getElementById('sig-canvas');
+        const clearBtn = document.getElementById('clear-btn');
+
+        repNameInput.disabled = !isAllAgreed;
+        canvasEl.style.pointerEvents = isAllAgreed ? 'auto' : 'none';
+        canvasEl.style.opacity = isAllAgreed ? '1' : '0.5';
+        clearBtn.disabled = !isAllAgreed;
+
+        if (!isAllAgreed) { repNameInput.value = ''; clearSignature(); }
+        else {
+            const firstRowName = document.querySelector('#passenger-tbody tr .p-name');
+            if (firstRowName && firstRowName.value.trim() !== '') repNameInput.value = firstRowName.value.trim();
+        }
+    }
+
+    function saveData() {
+        if (!validateFormBeforeAction()) return;
+        performAutoSave();
+        closeAllMenus();
+        askResetFormAfterAction('데이터가 성공적으로 저장 및 다운로드되었습니다.');
+    }
+
+    function openLoadModal() { closeAllMenus(); renderLoadList(); document.getElementById("load-modal").style.display = "block"; }
+    function closeLoadModal() { document.getElementById("load-modal").style.display = "none"; }
+    function renderLoadList() {
+        const listContainer = document.getElementById("load-file-list");
+        const savedList = JSON.parse(localStorage.getItem('kimSiminAppList') || '[]');
+        if (savedList.length === 0) { listContainer.innerHTML = `<div style="text-align: center; color: #775; padding: 20px;">저장된 신청 내역이 없습니다.</div>`; return; }
+        listContainer.innerHTML = savedList.map((item, index) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid #ccc; padding: 10px 15px; margin-bottom: 8px; border-radius: 4px;">
+                <div><strong style="font-size: 18px; color: #007bff;">${item.keyName}</strong><div style="font-size: 14px; color: #666;">작성일: ${item.dateStr} | 인원: ${item.data.passengers.length}명</div></div>
+                <button type="button" onclick="loadSavedItem(${index})" style="background-color: #28a745; font-size: 15px; padding: 6px 14px; margin:0;">선택 불러오기</button>
+            </div>`).join('');
+    }
+
+    function loadSavedItem(index) {
+        const savedList = JSON.parse(localStorage.getItem('kimSiminAppList') || '[]');
+        if (savedList[index]) { applyLoadedData(savedList[index].data); closeLoadModal(); alert('불러왔습니다.'); }
+    }
+
+    function handleFileImport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try { applyLoadedData(JSON.parse(e.target.result)); closeLoadModal(); alert('파일을 불러왔습니다.'); }
+            catch (err) { alert('유효하지 않은 JSON 파일입니다.'); }
+        };
+        reader.readAsText(file);
+    }
+
+    function applyLoadedData(data) {
+        document.querySelector('input[name="privacy_agree"][value="yes"]').checked = true;
+        document.querySelector('input[name="prohibit_agree"][value="yes"]').checked = true;
+        toggleAgreement();
+        document.getElementById('rep-name').value = data.repName || '';
+        document.getElementById('year').value = data.year || new Date().getFullYear();
+        document.getElementById('month').value = data.month || (new Date().getMonth() + 1);
+        document.getElementById('day').value = data.day || new Date().getDate();
+
+        if (data.sigImage) {
+            clearSignature();
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = data.sigImage;
+        }
+
+        if (data.shipName && data.departTime) {
+            document.querySelectorAll('input[name="departure_time"]').forEach(r => {
+                const [bId, tVal] = r.value.split('_');
+                if (boatManagerData[bId] && boatManagerData[bId].name === data.shipName && tVal === data.departTime) r.checked = true;
+            });
+        }
+
+        const tbody = document.getElementById("passenger-tbody");
+        tbody.innerHTML = "";
+        if (data.passengers && data.passengers.length > 0) data.passengers.forEach(p => addPassengerRow(p));
+        else { addPassengerRow(); addPassengerRow(); }
+        updateTotals();
+    }
+
+    function printPage() {
+        let repName = document.getElementById('rep-name').value.trim() || "대표자미입력";
+        let shipName = "선박미선택", departTime = "시간미선택";
+        const selectedRadio = document.querySelector('input[name="departure_time"]:checked');
+        if (selectedRadio) {
+            const [boatId, timeVal] = selectedRadio.value.split('_');
+            if (boatManagerData[boatId]) shipName = boatManagerData[boatId].name;
+            departTime = timeVal.replace(':', '');
+        }
+        const titleName = `${repName}_${shipName}_${departTime}`;
+        const originalTitle = document.title;
+        document.title = titleName;
+        window.print();
+        setTimeout(() => { document.title = originalTitle; }, 500);
+        closeAllMenus();
+    }
+
+    const canvas = document.getElementById('sig-canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.strokeStyle = '#000';
+
+    function getPosition(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height) };
+    }
+
+    canvas.addEventListener('mousedown', (e) => { if(!document.getElementById('rep-name').disabled) { drawing = true; ctx.beginPath(); const p = getPosition(e); ctx.moveTo(p.x, p.y); } });
+    canvas.addEventListener('mousemove', (e) => { if(drawing && !document.getElementById('rep-name').disabled) { const p = getPosition(e); ctx.lineTo(p.x, p.y); ctx.stroke(); } });
+    window.addEventListener('mouseup', () => { drawing = false; });
+    
+    canvas.addEventListener('touchstart', (e) => { if(!document.getElementById('rep-name').disabled) { drawing = true; ctx.beginPath(); const p = getPosition(e); ctx.moveTo(p.x, p.y); e.preventDefault(); } }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { if(drawing && !document.getElementById('rep-name').disabled) { const p = getPosition(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); } }, { passive: false });
+    window.addEventListener('touchend', () => { drawing = false; });
+
+    function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+    const now = new Date();
+    document.getElementById('year').value = now.getFullYear();
+    document.getElementById('month').value = now.getMonth() + 1;
+    document.getElementById('day').value = now.getDate();
+
+    initLanguageMenu();
+    initFirebaseListener();
+    for (let i = 0; i < 2; i++) addPassengerRow();
+</script>
+</body>
+</html>

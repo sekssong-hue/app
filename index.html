@@ -669,7 +669,7 @@
             "privacy-title": "※ 個人情報の収集および利用同意 ※",
             "privacy-desc": "<b>[目的]</b> 本人確認および保険適用。<br><b>[項目]</b> 氏名、生年月日、連絡先、撮影画像・動画。<br><b>[期間]</b> 提出日より1年間保管。<br><b>[拒否権]</b> 同意を拒否できますが、乗船できません。",
             "agree-yes": "同意する", "agree-no": "同意しない",
-            "apply-title": "キム・シミン号の乗船を申し込みます。",
+            "apply-title": "キム・シミン号の乗船을 申し込みます。",
             "date-year": "年", "date-month": "月", "date-day": "日",
             "rep-label": "代表者 (保護者)", "sign-text": "(署名)", "btn-clear": "署名を消す",
             "gender-male": "男", "gender-female": "女",
@@ -981,6 +981,7 @@
         }
     }
 
+    /* 📌 [1. 선박 선택 및 출발시간 선택] 렌더링 함수 수정 부분 */
     function renderDepartureTimes() {
         const tbody = document.getElementById("departure-tbody");
         tbody.innerHTML = "";
@@ -1034,8 +1035,11 @@
                 }
             });
 
+            // 선박명이 없을 경우 '김시민 X호' 형태로 기본값을 명확히 할당
+            const shipDisplayName = (ship && ship.name && ship.name.trim() !== "") ? ship.name : `김시민 ${id}호`;
+
             const tr = document.createElement("tr");
-            tr.innerHTML = `<td style="width: 15%; font-weight: bold;">${ship.name || ('선박 ' + id)}</td><td style="width: 85%; text-align: left; padding-left: 20px;">${timesHtml}</td>`;
+            tr.innerHTML = `<td style="width: 15%; font-weight: bold;" data-ship-id="${id}">${shipDisplayName}</td><td style="width: 85%; text-align: left; padding-left: 20px;">${timesHtml}</td>`;
             tbody.appendChild(tr);
         });
 
@@ -1051,10 +1055,11 @@
         modalList.innerHTML = "";
         Object.keys(boatManagerData).forEach((id, idx) => {
             const ship = boatManagerData[id];
+            const shipDisplayName = (ship && ship.name) ? ship.name : `김시민 ${id}호`;
             modalList.innerHTML += `
                 <div style="background: #f9f9f9; border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 5px;">
                     <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-                        <input type="text" value="${ship.name}" id="m-name-${idx}" style="width: 180px; font-weight:bold; font-size: 17px;" placeholder="선박명">
+                        <input type="text" value="${shipDisplayName}" id="m-name-${idx}" style="width: 180px; font-weight:bold; font-size: 17px;" placeholder="선박명">
                         <button type="button" onclick="removeModalShip('${id}')" style="background-color: #dc3545; padding: 6px 12px; font-size: 15px;">선박 삭제</button>
                     </div>
                     <div>
@@ -1069,7 +1074,8 @@
     }
 
     function addModalShip() {
-        boatManagerData[Date.now().toString()] = { name: "새 선박", capacity: 25, duration: 20, course: "망진나루 ↔ 진주성", notice: "정상 운항 중", times: ["10:00", "11:00"], seats: {}, customStatus: {} };
+        const newId = Date.now().toString();
+        boatManagerData[newId] = { name: "새 선박", capacity: 25, duration: 20, course: "망진나루 ↔ 진주성", notice: "정상 운항 중", times: ["10:00", "11:00"], seats: {}, customStatus: {} };
         renderModalShips();
     }
     function removeModalShip(id) {

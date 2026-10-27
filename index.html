@@ -227,19 +227,19 @@
             <div class="notice-list-container">
                 <div class="notice-item-card">
                     <span class="icon">✔</span>
-                    <div>김시민호 인터넷 예약자는 탑승신청서를 작성하지 않아도 됩니다.</div>
+                    <div data-lang-key="popup-item1">김시민호 인터넷 예약자는 탑승신청서를 작성하지 않아도 됩니다.</div>
                 </div>
                 <div class="notice-item-card">
                     <span class="icon">✔</span>
-                    <div>김시민호 현장 탑승자는 매표소에 탑승신청서를 작성해서 제시해 주세요.</div>
+                    <div data-lang-key="popup-item2">김시민호 현장 탑승자는 매표소에 탑승신청서를 작성해서 제시해 주세요.</div>
                 </div>
                 <div class="notice-item-card">
                     <span class="icon">✔</span>
-                    <div>요금감면 및 면제대상자는 매표소에 탑승신청서를 작성해서 증빙서류(신분증)를 같이 제시해 주세요.</div>
+                    <div data-lang-key="popup-item3">요금감면 및 면제대상자는 매표소에 탑승신청서를 작성해서 증빙서류(신분증)를 같이 제시해 주세요.</div>
                 </div>
                 <div class="notice-item-card">
                     <span class="icon">✔</span>
-                    <div>영·유아(0세 포함)도 작성해 주세요.</div>
+                    <div data-lang-key="popup-item4">영·유아(0세 포함)도 작성해 주세요.</div>
                 </div>
             </div>
 
@@ -265,7 +265,7 @@
                         <button type="button" onclick="saveData()" style="background-color: #28a745; width: 100%; margin: 2px 0;" data-lang-key="adm-save">저장</button>
                         <button type="button" onclick="openLoadModal()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" data-lang-key="adm-load">불러오기</button>
                         <button type="button" onclick="printPage()" style="background-color: #6c757d; width: 100%; margin: 2px 0;" data-lang-key="adm-print">인쇄</button>
-                        <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-worker">🚨 탑승제한 열 표시 (OFF)</button>
+                        <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-worker" data-lang-key="btn-blacklist-worker">🚨 탑승제한 열 표시 (OFF)</button>
                         <hr style="border: 0; border-top: 1px solid #ccc; margin: 4px 0;">
                         <button type="button" onclick="sendRemainingSeats()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" data-lang-key="btn-send-seat">잔여석전송</button>
                         <button type="button" onclick="cancelRemainingSeats()" style="background-color: #6c757d; width: 100%; margin: 2px 0;" data-lang-key="btn-cancel-seat">잔여석전송취소</button>
@@ -277,9 +277,9 @@
                 <button type="button" onclick="toggleMenu('adminMenu')" style="background-color: #343a40;" data-lang-key="admin-btn">관리자모드 ▼</button>
                 <div id="adminMenu" class="mode-content">
                     <button type="button" onclick="openShipManager()" style="background-color: #6610f2; width: 100%; margin: 2px 0;" data-lang-key="adm-ship">선박/시간 관리</button>
-                    <button type="button" onclick="togglePopupSetting()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" id="btn-popup-setting">팝업창 사용 설정 (ON)</button>
-                    <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-admin">🚨 탑승제한 열 표시 (OFF)</button>
-                    <button type="button" onclick="openBlacklistModal()" style="background-color: #dc3545; width: 100%; margin: 2px 0;">🚨 탑승 제한(블랙리스트) 목록 관리</button>
+                    <button type="button" onclick="togglePopupSetting()" style="background-color: #17a2b8; width: 100%; margin: 2px 0;" id="btn-popup-setting" data-lang-key="btn-popup-setting">팝업창 사용 설정 (ON)</button>
+                    <button type="button" onclick="toggleBlacklistColumn()" style="background-color: #e67e22; width: 100%; margin: 2px 0;" id="btn-toggle-blacklist-admin" data-lang-key="btn-blacklist-admin">🚨 탑승제한 열 표시 (OFF)</button>
+                    <button type="button" onclick="openBlacklistModal()" style="background-color: #dc3545; width: 100%; margin: 2px 0;" data-lang-key="btn-blacklist-manage">🚨 탑승 제한(블랙리스트) 목록 관리</button>
                 </div>
             </div>
         </div>
@@ -305,7 +305,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; margin-top: 25px;">
         <div class="passenger-title-text" data-lang-key="passenger-list-title">2. 김시민호 탑승자 명단</div>
         <div class="total-summary-box">
-            <span data-lang-key="total-price-label">총금액</span>: <span id="total-price">0</span>원 &nbsp;|&nbsp; 
+            <span data-lang-key="total-price-label">총금액</span>: <span id="total-price">0</span><span data-lang-key="currency-unit">원</span> &nbsp;|&nbsp; 
             <span data-lang-key="total-count-label">총 인원</span>: <span id="total-count">0</span> <span data-lang-key="person-unit">명</span>
         </div>
     </div>
@@ -321,7 +321,7 @@
                 <th style="width: 13%;" data-lang-key="th-discount">할인(50%)</th>
                 <th style="width: 13%;" data-lang-key="th-exemption">면제(100%)</th>
                 <th style="width: 8%;" data-lang-key="th-gender">성 별</th>
-                <th class="blacklist-col" style="width: 8%;">탑승제한</th>
+                <th class="blacklist-col" style="width: 8%;" data-lang-key="th-blacklist">탑승제한</th>
             </tr>
         </thead>
         <tbody id="passenger-tbody"></tbody>
@@ -421,7 +421,6 @@
 </div>
 
 <script>
-    // ⚙️ Chrome PWA 앱 설치 인식을 위한 더미 서비스 워커 자동 등록
     if ('serviceWorker' in navigator) {
         const swCode = "self.addEventListener('fetch', function(e) {});";
         const blob = new Blob([swCode], { type: 'text/javascript' });
@@ -513,48 +512,244 @@
     const baseDict = {
         ko: {
             pageTitle: "김시민호 탑승 신청서",
+            "popup-title": "📢 김시민호 탑승 안내사항",
+            "popup-item1": "김시민호 인터넷 예약자는 탑승신청서를 작성하지 않아도 됩니다.",
+            "popup-item2": "김시민호 현장 탑승자는 매표소에 탑승신청서를 작성해서 제시해 주세요.",
+            "popup-item3": "요금감면 및 면제대상자는 매표소에 탑승신청서를 작성해서 증빙서류(신분증)를 같이 제시해 주세요.",
+            "popup-item4": "영·유아(0세 포함)도 작성해 주세요.",
+            "popup-desc": "※ [확인] 버튼을 누르거나 바탕화면을 클릭하면 신청서를 작성할 수 있습니다.",
+            "popup-btn": "확 인 (신청서 작성하기)",
             "worker-btn": "근무자모드 ▼", "admin-btn": "관리자모드 ▼", 
             "adm-save": "저장", "adm-load": "불러오기", "adm-print": "인쇄", 
+            "btn-blacklist-worker": "🚨 탑승제한 열 표시 (OFF)", "btn-blacklist-admin": "🚨 탑승제한 열 표시 (OFF)",
+            "btn-popup-setting": "팝업창 사용 설정 (ON)", "btn-blacklist-manage": "🚨 탑승 제한(블랙리스트) 목록 관리",
             "btn-send-seat": "잔여석전송", "btn-cancel-seat": "잔여석전송취소", "btn-refresh": "🔄 새로고침",
             "adm-ship": "선박/시간 관리", "lang-label": "🌐 언어선택 ▼",
             "main-title": "김시민호 탑승 신청서", "sec-depart-title": "1. 김시민호 선택 및 출발 시간 선택", "th-ship-name": "선박명", "th-depart-time": "출발 시간",
             "caution-2": "⏰ 출발시간 10분 전에 김시민호 탑승장에서 대기하여 주십시오.",
-            "passenger-list-title": "2. 김시민호 탑승자 명단", "total-price-label": "총금액", "total-count-label": "총 인원", "person-unit": "명",
-            "th-no": "  ", "th-name": "성 명", "th-birth": "생년월일(YYYYMMDD-*)", "th-phone": "연락처(11자)", "th-addr": "거주지", "th-discount": "할인(50%)", "th-exemption": "면제(100%)", "th-gender": "성 별",
+            "passenger-list-title": "2. 김시민호 탑승자 명단", "total-price-label": "총금액", "total-count-label": "총 인원", "person-unit": "명", "currency-unit": "원",
+            "th-no": "  ", "th-name": "성 명", "th-birth": "생년월일(YYYYMMDD-*)", "th-phone": "연락처(11자)", "th-addr": "거주지", "th-discount": "할인(50%)", "th-exemption": "면제(100%)", "th-gender": "성 별", "th-blacklist": "탑승제한",
             "opt-discount-none": "해당 없음", "opt-discount-jinju": "진주시민 (50%)", "opt-discount-sancheong": "산청군민 (50%)", "opt-discount-multi": "두 자녀 이상 가정 (50%)", "opt-discount-other-exemption": "외지인 중 면제대상자 (50%)",
             "opt-exemption-none": "해당 없음", "opt-exemption-infant": "36개월 이하 어린이 (무료)", "opt-exemption-senior": "진주시민 65세 이상 (무료)", "opt-exemption-official": "공무수행 (무료)", "opt-exemption-disabled": "등록 장애인 (중증 보호자 1인 포함)", "opt-exemption-merit": "국가/독립/5·18/참전유공자 및 유족", "opt-exemption-basic": "기초생활수급자 / 한부모가족", "opt-exemption-honor": "진주시 명예시민", "opt-exemption-etc": "기타 면제 대상자",
             "btn-add": "+ 탑승자 추가", "btn-del": "- 탑승자 삭제",
             "prohibit-title": "※ 김시민호 탑승 금지 및 제한 ※",
-            "prohibit-desc": "<b>1. 음주자(주취자) 및 정신질환자 탑승금지<br>2. 중학생 이하는 보호자와 같이 탑승 가능<br>3. 반려동물 탑승 금지<br>4. 그 외 안전요원의 판단에 따라 제한될 수 있습니다.</b>",
+            "prohibit-desc": "<b> 1. 음주자(주취자) 및 정신질환자 탑승 금지<br> 2. 중학생 이하는 보호자와 같이 탑승 가능<br> 3. 반려동물와 같이 탑승 금지<br> 4. 그 외 안전요원의 판단에 따라 탑승이 제한될 수 있습니다.</b>",
             "privacy-title": "※ 개인정보 수집 및 활용 동의 ※",
-            "privacy-desc": "<b>[개인정보 수집 목적]</b> - 본인확인, 보험적용 등",
+            "privacy-desc": "<b>[개인정보 수집 목적]</b> - 본인확인, 보험적용 등<br><b>[개인정보 수집 항목]</b> - 성명, 생년월일, 연락처, 사진 및 동영상촬영(홍보 및 보고자료 사용) 등<br><b>[개인정보 수집 기한]</b> - 가입일로부터 1년간 보유하며 별도 요청시 폐기할 수 있음.<br><b>[개인정보 수집 및 활용 동의 거부의 권리]</b> - 본 안내에 따른 개인정보 수집 및 활용에 대하여 거부 할 수 있으나, 거부시에는 보험적용 등을 받을 수 없으므로 탑승 할 수 없습니다.<br><b>[동 의]</b> - 대표자의 신청으로 탑승자 전체가 동의한 것으로 확인하며, 안전요원의 통제에 따르며 지시불이행, 지병, 개인 부주의로 인해 발생한 사고에 대해서는 책임을 묻지 않는 것을 서약합니다.",
             "agree-yes": "동의함", "agree-no": "동의하지 않음",
             "apply-title": "김시민호 탑승을 신청합니다.",
             "date-year": "년", "date-month": "월", "date-day": "일",
             "rep-label": "신청인 대표(보호자)", "sign-text": "(서명)", "btn-clear": "서명 지우기",
-            "modal-title": "🚢 선박 및 시간 관리",
+            "modal-title": "🚢 선박 및 출발 시간 관리",
             "modal-add-ship": "+ 선박 추가", "modal-apply": "적용하기", "modal-close": "닫기",
             "load-modal-title": "📁 저장된 탑승 신청서 목록",
             "load-modal-desc": "불러올 내역을 선택하거나 컴퓨터에 저장된 JSON 파일을 직접 업로드하세요.",
             "gender-male": "남", "gender-female": "여",
-            "placeholder-name": "성명", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "거주지"
+            "placeholder-name": "성명 입력", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "거주지 입력",
+            "status-soldout": "매진", "status-closed": "마감", "status-ended": "운항종료", "seats-unit": "석"
         },
-        en: { pageTitle: "Kim Simin Ferry Boarding Application" },
-        zh: { pageTitle: "金时敏号登船申请书" },
-        zh_tw: { pageTitle: "金時敏號登船申請書" },
-        ja: { pageTitle: "キム・シミン号 乗船申込書" },
-        vi: { pageTitle: "Đơn xin lên tàu Kim Simin" },
-        th: { pageTitle: "ใบ신청การขึ้นเรือ김시민" }
+        en: {
+            pageTitle: "Kim Simin Ferry Boarding Application",
+            "popup-title": "📢 Kim Simin Ferry Boarding Notice",
+            "popup-item1": "Online reservation holders do not need to fill out this form.",
+            "popup-item2": "On-site passengers must fill out and submit this form to the ticket office.",
+            "popup-item3": "Discount/exemption eligible passengers must present valid ID/proof documents.",
+            "popup-item4": "Infants/Toddlers (including age 0) must also be registered.",
+            "popup-desc": "※ Click [OK] or tap background to fill out application form.",
+            "popup-btn": "OK (Start Writing)",
+            "worker-btn": "Staff Mode ▼", "admin-btn": "Admin Mode ▼",
+            "adm-save": "Save", "adm-load": "Load", "adm-print": "Print",
+            "btn-send-seat": "Send Remaining Seats", "btn-cancel-seat": "Cancel Seat Send", "btn-refresh": "🔄 Refresh",
+            "adm-ship": "Ship/Time Management", "lang-label": "🌐 Language ▼",
+            "main-title": "Kim Simin Ferry Boarding Application", "sec-depart-title": "1. Select Ship & Departure Time", "th-ship-name": "Ship Name", "th-depart-time": "Departure Time",
+            "caution-2": "⏰ Please arrive at the boarding area 10 minutes before departure.",
+            "passenger-list-title": "2. Passenger Manifest", "total-price-label": "Total Amount", "total-count-label": "Total Persons", "person-unit": "Person(s)", "currency-unit": "KRW",
+            "th-no": "No.", "th-name": "Full Name", "th-birth": "Date of Birth (YYYYMMDD-*)", "th-phone": "Phone Number", "th-addr": "Residence", "th-discount": "Discount (50%)", "th-exemption": "Exemption (100%)", "th-gender": "Gender", "th-blacklist": "Boarding Restrict",
+            "opt-discount-none": "None", "opt-discount-jinju": "Jinju Resident (50%)", "opt-discount-sancheong": "Sancheong Resident (50%)", "opt-discount-multi": "Multi-child Family (50%)", "opt-discount-other-exemption": "Non-resident Exemption Target (50%)",
+            "opt-exemption-none": "None", "opt-exemption-infant": "Under 36 Months (Free)", "opt-exemption-senior": "Jinju Resident 65+ (Free)", "opt-exemption-official": "Official Duty (Free)", "opt-exemption-disabled": "Registered Disabled (Inc. 1 Companion)", "opt-exemption-merit": "National Merit / Veterans", "opt-exemption-basic": "Basic Livelihood Recipient", "opt-exemption-honor": "Jinju Honorary Citizen", "opt-exemption-etc": "Other Exemptions",
+            "btn-add": "+ Add Passenger", "btn-del": "- Remove Passenger",
+            "prohibit-title": "※ Boarding Restrictions & Rules ※",
+            "prohibit-desc": "<b>1. Intoxicated persons and individuals with severe mental illness are prohibited.<br>2. Students under middle school must be accompanied by a guardian.<br>3. Pets are strictly prohibited on board.<br>4. Boarding may be restricted based on safety officer's judgment.</b>",
+            "privacy-title": "※ Consent to Personal Information Collection ※",
+            "privacy-desc": "<b>[Purpose]</b> Identity verification & Insurance coverage.<br><b>[Items]</b> Name, Birthdate, Contact, Media captures for promotional use.<br><b>[Retention]</b> Retained for 1 year from submission.<br><b>[Refusal Right]</b> You may refuse consent, but boarding will be restricted.",
+            "agree-yes": "Agree", "agree-no": "Disagree",
+            "apply-title": "I apply for Kim Simin Ferry boarding.",
+            "date-year": "/", "date-month": "/", "date-day": "",
+            "rep-label": "Representative (Guardian)", "sign-text": "(Signature)", "btn-clear": "Clear Signature",
+            "gender-male": "M", "gender-female": "F",
+            "placeholder-name": "Name", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "Residence City",
+            "status-soldout": "Sold Out", "status-closed": "Closed", "status-ended": "Ended", "seats-unit": "Seats"
+        },
+        zh: {
+            pageTitle: "金时敏号登船申请书",
+            "popup-title": "📢 金时敏号登船须知",
+            "popup-item1": "网上预约成功者无需填写此申请书。",
+            "popup-item2": "现场购票登船者请填写后提交至售票处。",
+            "popup-item3": "享有优惠或免费资格者请同时出示身份证件。",
+            "popup-item4": "婴幼儿（包含0岁）也必须填写登记。",
+            "popup-desc": "※ 点击[确认]按钮或背景区域即可开始填写。",
+            "popup-btn": "确 认 (填写申请书)",
+            "worker-btn": "工作人员模式 ▼", "admin-btn": "管理员模式 ▼",
+            "adm-save": "保存", "adm-load": "读取", "adm-print": "打印",
+            "btn-send-seat": "发送余票", "btn-cancel-seat": "取消发送", "btn-refresh": "🔄 刷新",
+            "adm-ship": "船只/时间管理", "lang-label": "🌐 语言选择 ▼",
+            "main-title": "金时敏号登船申请书", "sec-depart-title": "1. 选择船只及出发时间", "th-ship-name": "船只名称", "th-depart-time": "出发时间",
+            "caution-2": "⏰ 请在出发前10分钟到达金时敏号码头集合。",
+            "passenger-list-title": "2. 登船人员名单", "total-price-label": "总金额", "total-count-label": "总人数", "person-unit": "人", "currency-unit": "韩元",
+            "th-no": "序号", "th-name": "姓 名", "th-birth": "出生日期 (YYYYMMDD-*)", "th-phone": "联系电话", "th-addr": "居住地", "th-discount": "优惠(50%)", "th-exemption": "免费(100%)", "th-gender": "性 别", "th-blacklist": "登船限制",
+            "opt-discount-none": "无", "opt-discount-jinju": "晋州市民 (50%)", "opt-discount-sancheong": "山清郡民 (50%)", "opt-discount-multi": "多子女家庭 (50%)", "opt-discount-other-exemption": "外地人优惠对象 (50%)",
+            "opt-exemption-none": "无", "opt-exemption-infant": "36个月以下儿童 (免费)", "opt-exemption-senior": "晋州市民 65岁以上 (免费)", "opt-exemption-official": "公务执行 (免费)", "opt-exemption-disabled": "残疾人 (含1名陪同)", "opt-exemption-merit": "国家有功者及遗族", "opt-exemption-basic": "基础生活保障户", "opt-exemption-honor": "晋州荣誉市民", "opt-exemption-etc": "其他免费对象",
+            "btn-add": "+ 添加乘客", "btn-del": "- 删除乘客",
+            "prohibit-title": "※ 登船禁止及限制事项 ※",
+            "prohibit-desc": "<b>1. 饮酒者及精神疾患人群禁止登船。<br>2. 初中生及以下必须由监护人陪同。<br>3. 严禁携带宠物登船。<br>4. 根据现场安全人员判断可能限制登船。</b>",
+            "privacy-title": "※ 个人信息采集及使用同意书 ※",
+            "privacy-desc": "<b>[采集目的]</b> 身份核对及保险办理。<br><b>[采集项目]</b> 姓名、出生日期、联系电话、宣传照片及视频。<br><b>[保存期限]</b> 自提交之日起保存1年。<br><b>[拒绝权利]</b> 您可以拒绝同意，但将无法乘船。",
+            "agree-yes": "同意", "agree-no": "不同意",
+            "apply-title": "申请乘坐金时敏号。",
+            "date-year": "年", "date-month": "月", "date-day": "日",
+            "rep-label": "申请人代表 (监护人)", "sign-text": "(签字)", "btn-clear": "清除签字",
+            "gender-male": "男", "gender-female": "女",
+            "placeholder-name": "姓名", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "居住城市",
+            "status-soldout": "售罄", "status-closed": "截止", "status-ended": "结束", "seats-unit": "座"
+        },
+        zh_tw: {
+            pageTitle: "金時敏號登船申請書",
+            "popup-title": "📢 金時敏號登船須知",
+            "popup-item1": "網路預約成功者無需填寫此申請書。",
+            "popup-item2": "現場購票登船者請填寫後提交至售票處。",
+            "popup-item3": "享有優惠或免費資格者請同時出示身分證明文件。",
+            "popup-item4": "嬰幼兒（包含0歲）也必須填寫登記。",
+            "popup-desc": "※ 點擊[確認]按鈕或背景區域即可開始填寫。",
+            "popup-btn": "確 認 (填寫申請書)",
+            "worker-btn": "工作人員模式 ▼", "admin-btn": "管理員模式 ▼",
+            "adm-save": "儲存", "adm-load": "讀取", "adm-print": "列印",
+            "btn-send-seat": "發送剩餘座位", "btn-cancel-seat": "取消發送", "btn-refresh": "🔄 重新整理",
+            "adm-ship": "船隻/時間管理", "lang-label": "🌐 語言選擇 ▼",
+            "main-title": "金時敏號登船申請書", "sec-depart-title": "1. 選擇船隻及出發時間", "th-ship-name": "船隻名稱", "th-depart-time": "出發時間",
+            "caution-2": "⏰ 請於出發前10分鐘到達金時敏號碼頭集合。",
+            "passenger-list-title": "2. 登船人員名單", "total-price-label": "總金額", "total-count-label": "總人數", "person-unit": "人", "currency-unit": "韓元",
+            "th-no": "序號", "th-name": "姓 名", "th-birth": "出生日期 (YYYYMMDD-*)", "th-phone": "聯絡電話", "th-addr": "居住地", "th-discount": "優惠(50%)", "th-exemption": "免費(100%)", "th-gender": "性 別", "th-blacklist": "登船限制",
+            "opt-discount-none": "無", "opt-discount-jinju": "晉州市民 (50%)", "opt-discount-sancheong": "山清郡民 (50%)", "opt-discount-multi": "多子女家庭 (50%)", "opt-discount-other-exemption": "外地人優惠對象 (50%)",
+            "opt-exemption-none": "無", "opt-exemption-infant": "36個月以下兒童 (免費)", "opt-exemption-senior": "晉州市民 65歲以上 (免費)", "opt-exemption-official": "公務執行 (免費)", "opt-exemption-disabled": "身心障礙者 (含1名陪同)", "opt-exemption-merit": "國家有功者及遺族", "opt-exemption-basic": "基礎生活保障戶", "opt-exemption-honor": "晉州榮譽市民", "opt-exemption-etc": "其他免費對象",
+            "btn-add": "+ 新增乘客", "btn-del": "- 刪除乘客",
+            "prohibit-title": "※ 登船禁止及限制事項 ※",
+            "prohibit-desc": "<b>1. 飲酒者及精神疾病人群禁止登船。<br>2. 國中生及以下必須由監護人陪同。<br>3. 嚴禁攜帶寵物登船。<br>4. 根據現場安全人員判斷可能限制登船。</b>",
+            "privacy-title": "※ 個人資料蒐集及使用同意書 ※",
+            "privacy-desc": "<b>[蒐集目的]</b> 身分核對及保險辦理。<br><b>[蒐集項目]</b> 姓名、出生日期、聯絡電話、宣傳照片及影片。<br><b>[保存期限]</b> 自提交之日起保存1年。<br><b>[拒絕權利]</b> 您可以拒絕同意，但將無法搭乘。",
+            "agree-yes": "同意", "agree-no": "不同意",
+            "apply-title": "申請搭乘金時敏號。",
+            "date-year": "年", "date-month": "月", "date-day": "日",
+            "rep-label": "申請人代表 (監護人)", "sign-text": "(簽名)", "btn-clear": "清除簽名",
+            "gender-male": "男", "gender-female": "女",
+            "placeholder-name": "姓名", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "居住城市",
+            "status-soldout": "售罄", "status-closed": "截止", "status-ended": "結束", "seats-unit": "座"
+        },
+        ja: {
+            pageTitle: "キム・シミン号 乗船申込書",
+            "popup-title": "📢 キム・シミン号 乗船ご案内",
+            "popup-item1": "ネット予約済みの方は本申込書の記入は不要です。",
+            "popup-item2": "当日券でご乗船の方は乗車券売り場へご提出ください。",
+            "popup-item3": "割引・免除対象者は証明書（身分証明書）をご提示ください。",
+            "popup-item4": "乳幼児（0歳含む）も全員ご記入ください。",
+            "popup-desc": "※ [確認] ボタンまたは背景をタップして記入を開始します。",
+            "popup-btn": "確 認 (申込書を作成する)",
+            "worker-btn": "スタッフモード ▼", "admin-btn": "管理者モード ▼",
+            "adm-save": "保存", "adm-load": "読み込み", "adm-print": "印刷",
+            "btn-send-seat": "残席送信", "btn-cancel-seat": "送信取消", "btn-refresh": "🔄 更新",
+            "adm-ship": "船舶・時間管理", "lang-label": "🌐 言語選択 ▼",
+            "main-title": "キム・シミン号 乗船申込書", "sec-depart-title": "1. 船および出発時間の選択", "th-ship-name": "船名", "th-depart-time": "出発時間",
+            "caution-2": "⏰ 出発の10分前までに乗り場へお越しください。",
+            "passenger-list-title": "2. 乗船者名簿", "total-price-label": "合計金額", "total-count-label": "合計人数", "person-unit": "名", "currency-unit": "ウォン",
+            "th-no": "No.", "th-name": "氏 名", "th-birth": "生年月日 (YYYYMMDD-*)", "th-phone": "連絡先", "th-addr": "居住地", "th-discount": "割引(50%)", "th-exemption": "免除(100%)", "th-gender": "性 別", "th-blacklist": "乗船制限",
+            "opt-discount-none": "なし", "opt-discount-jinju": "晋州市民 (50%)", "opt-discount-sancheong": "山清郡民 (50%)", "opt-discount-multi": "多子世帯 (50%)", "opt-discount-other-exemption": "市外免除対象者 (50%)",
+            "opt-exemption-none": "なし", "opt-exemption-infant": "36ヶ月未満 (無料)", "opt-exemption-senior": "晋州市民65歳以上 (無料)", "opt-exemption-official": "公務遂行 (無料)", "opt-exemption-disabled": "障害者 (付添1名含む)", "opt-exemption-merit": "国家有功者・遺族", "opt-exemption-basic": "生活保護受給者", "opt-exemption-honor": "晋州名誉市民", "opt-exemption-etc": "その他免除対象",
+            "btn-add": "+ 乗客追加", "btn-del": "- 乗客削除",
+            "prohibit-title": "※ 乗船禁止および制限事項 ※",
+            "prohibit-desc": "<b>1. 泥酔者および精神疾患をお持ちの方は乗船できません。<br>2. 中学生以下は保護者の同伴が必要です。<br>3. ペットの同伴は禁止されております。<br>4. 安全要員の判断により乗船が制限される場合があります。</b>",
+            "privacy-title": "※ 個人情報の収集および利用同意 ※",
+            "privacy-desc": "<b>[目的]</b> 本人確認および保険適用。<br><b>[項目]</b> 氏名、生年月日、連絡先、撮影画像・動画。<br><b>[期間]</b> 提出日より1年間保管。<br><b>[拒否権]</b> 同意を拒否できますが、乗船できません。",
+            "agree-yes": "同意する", "agree-no": "同意しない",
+            "apply-title": "キム・シミン号の乗船を申し込みます。",
+            "date-year": "年", "date-month": "月", "date-day": "日",
+            "rep-label": "代表者 (保護者)", "sign-text": "(署名)", "btn-clear": "署名を消す",
+            "gender-male": "男", "gender-female": "女",
+            "placeholder-name": "氏名", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "居住都市",
+            "status-soldout": "完売", "status-closed": "締切", "status-ended": "終了", "seats-unit": "席"
+        },
+        vi: {
+            pageTitle: "Đơn xin lên tàu Kim Simin",
+            "popup-title": "📢 Thông báo lên tàu Kim Simin",
+            "popup-item1": "Khách đặt trước qua internet không cần điền đơn này.",
+            "popup-item2": "Khách mua vé tại chỗ vui lòng điền và nộp cho phòng vé.",
+            "popup-item3": "Khách thuộc diện miễn giảm cước phải xuất trình giấy tờ chứng minh.",
+            "popup-item4": "Trẻ sơ sinh (bao gồm 0 tuổi) cũng cần phải điền thông tin.",
+            "popup-desc": "※ Bấm [Xác nhận] hoặc chạm vào màn hình để bắt đầu điền.",
+            "popup-btn": "Xác nhận (Điền đơn)",
+            "worker-btn": "Chế độ nhân viên ▼", "admin-btn": "Chế độ quản lý ▼",
+            "adm-save": "Lưu", "adm-load": "Tải lại", "adm-print": "In",
+            "btn-send-seat": "Gửi chỗ còn trống", "btn-cancel-seat": "Hủy gửi chỗ", "btn-refresh": "🔄 Làm mới",
+            "adm-ship": "Quản lý tàu/Giờ", "lang-label": "🌐 Ngôn ngữ ▼",
+            "main-title": "Đơn xin lên tàu Kim Simin", "sec-depart-title": "1. Chọn tàu và giờ khởi hành", "th-ship-name": "Tên tàu", "th-depart-time": "Giờ khởi hành",
+            "caution-2": "⏰ Vui lòng có mặt tại bến tàu trước giờ khởi hành 10 phút.",
+            "passenger-list-title": "2. Danh sách hành khách", "total-price-label": "Tổng tiền", "total-count-label": "Tổng số người", "person-unit": "người", "currency-unit": "KRW",
+            "th-no": "STT", "th-name": "Họ và tên", "th-birth": "Ngày sinh (YYYYMMDD-*)", "th-phone": "Số điện thoại", "th-addr": "Nơi cư trú", "th-discount": "Giảm giá(50%)", "th-exemption": "Miễn phí(100%)", "th-gender": "Giới tính", "th-blacklist": "Hạn chế lên tàu",
+            "opt-discount-none": "Không", "opt-discount-jinju": "Cư dân Jinju (50%)", "opt-discount-sancheong": "Cư dân Sancheong (50%)", "opt-discount-multi": "Gia đình đông con (50%)", "opt-discount-other-exemption": "Đối tượng miễn giảm ngoại tỉnh (50%)",
+            "opt-exemption-none": "Không", "opt-exemption-infant": "Trẻ dưới 36 tháng (Miễn phí)", "opt-exemption-senior": "Người Jinju từ 65 tuổi (Miễn phí)", "opt-exemption-official": "Công vụ (Miễn phí)", "opt-exemption-disabled": "Người khuyết tật (Kèm 1 người giám hộ)", "opt-exemption-merit": "Người có công với cách mạng", "opt-exemption-basic": "Hộ nghèo / Hộ đơn thân", "opt-exemption-honor": "Công dân danh dự Jinju", "opt-exemption-etc": "Miễn phí khác",
+            "btn-add": "+ Thêm hành khách", "btn-del": "- Xóa hành khách",
+            "prohibit-title": "※ Quy định và hạn chế lên tàu ※",
+            "prohibit-desc": "<b>1. Cấm người say rượu và người có bệnh tâm thần lên tàu.<br>2. Học sinh cấp 2 trở xuống phải có người giám hộ đi cùng.<br>3. Nghiêm cấm mang theo thú cưng.<br>4. Nhân viên an toàn có quyền từ chối cho lên tàu vì lý do an toàn.</b>",
+            "privacy-title": "※ Đồng ý thu thập thông tin cá nhân ※",
+            "privacy-desc": "<b>[Mục đích]</b> Xác minh danh tính & Đăng ký bảo hiểm.<br><b>[Mục thu thập]</b> Tên, Ngày sinh, SĐT, Hình ảnh/Video quảng bá.<br><b>[Thời hạn]</b> Lưu trữ 1 năm kể từ ngày đăng ký.<br><b>[Quyền từ chối]</b> Bạn có quyền từ chối nhưng sẽ không được lên tàu.",
+            "agree-yes": "Đồng ý", "agree-no": "Không đồng ý",
+            "apply-title": "Tôi xin đăng ký lên tàu Kim Simin.",
+            "date-year": "/", "date-month": "/", "date-day": "",
+            "rep-label": "Đại diện (Người giám hộ)", "sign-text": "(Chữ ký)", "btn-clear": "Xóa chữ ký",
+            "gender-male": "Nam", "gender-female": "Nữ",
+            "placeholder-name": "Họ tên", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "Thành phố cư trú",
+            "status-soldout": "Hết vé", "status-closed": "Đóng", "status-ended": "Kết thúc", "seats-unit": "chỗ"
+        },
+        th: {
+            pageTitle: "ใบสมัครลงเรือ Kim Simin",
+            "popup-title": "📢 ข้อแนะนำการขึ้นเรือ Kim Simin",
+            "popup-item1": "ผู้ที่จองผ่านอินเทอร์เน็ตไม่ต้องกรอกใบสมัครนี้",
+            "popup-item2": "ผู้ซื้อตั๋วหน้างานกรอกใบสมัครและยื่นที่ช่องขายตั๋ว",
+            "popup-item3": "ผู้ได้รับส่วนลด/ยกเว้นค่าบริการต้องแสดงหลักฐาน (บัตรประชาชน)",
+            "popup-item4": "เด็กทารก (รวมอายุ 0 ขวบ) ต้องกรอกข้อมูลด้วย",
+            "popup-desc": "※ กดปุ่ม [ยืนยัน] หรือแตะหน้าจอเพื่อเริ่มกรอกใบสมัคร",
+            "popup-btn": "ยืนยัน (เริ่มกรอกใบสมัคร)",
+            "worker-btn": "โหมดเจ้าหน้าที่ ▼", "admin-btn": "โหมดผู้ดูแล ▼",
+            "adm-save": "บันทึก", "adm-load": "โหลดข้อมูล", "adm-print": "พิมพ์",
+            "btn-send-seat": "ส่งจำนวนที่นั่งคงเหลือ", "btn-cancel-seat": "ยกเลิกการส่งที่นั่ง", "btn-refresh": "🔄 รีเฟรช",
+            "adm-ship": "จัดการเรือ/เวลา", "lang-label": "🌐 เลือกภาษา ▼",
+            "main-title": "ใบสมัครลงเรือ Kim Simin", "sec-depart-title": "1. เลือกเรือและเวลาออกเดินทาง", "th-ship-name": "ชื่อเรือ", "th-depart-time": "เวลาออกเดินทาง",
+            "caution-2": "⏰ กรุณามารอที่ท่าเรือก่อนเวลาออกเดินทาง 10 นาที",
+            "passenger-list-title": "2. รายชื่อผู้โดยสาร", "total-price-label": "ราคารวม", "total-count-label": "จำนวนรวม", "person-unit": "คน", "currency-unit": "วอน",
+            "th-no": "ลำดับ", "th-name": "ชื่อ-นามสกุล", "th-birth": "วันเดือนปีเกิด (YYYYMMDD-*)", "th-phone": "เบอร์โทรศัพท์", "th-addr": "ที่อยู่", "th-discount": "ส่วนลด(50%)", "th-exemption": "ยกเว้น(100%)", "th-gender": "เพศ", "th-blacklist": "จำกัดการขึ้นเรือ",
+            "opt-discount-none": "ไม่มี", "opt-discount-jinju": "พลเมือง Jinju (50%)", "opt-discount-sancheong": "พลเมือง Sancheong (50%)", "opt-discount-multi": "ครอบครัวบุตรหลายคน (50%)", "opt-discount-other-exemption": "ผู้ได้รับส่วนลดนอกพื้นที่ (50%)",
+            "opt-exemption-none": "ไม่มี", "opt-exemption-infant": "เด็กต่ำกว่า 36 เดือน (ฟรี)", "opt-exemption-senior": "พลเมือง Jinju อายุ 65+ (ฟรี)", "opt-exemption-official": "ปฏิบัติหน้าที่ราชการ (ฟรี)", "opt-exemption-disabled": "ผู้พิการ (รวมผู้ดูแล 1 คน)", "opt-exemption-merit": "ผู้ทำคุณประโยชน์ต่อชาติ", "opt-exemption-basic": "ผู้รับสวัสดิการขั้นพื้นฐาน", "opt-exemption-honor": "พลเมืองกิตติมศักดิ์ Jinju", "opt-exemption-etc": "ได้รับการยกเว้นอื่นๆ",
+            "btn-add": "+ เพิ่มผู้โดยสาร", "btn-del": "- ลบผู้โดยสาร",
+            "prohibit-title": "※ ข้อห้ามและข้อจำกัดในการขึ้นเรือ ※",
+            "prohibit-desc": "<b>1. ห้ามผู้มึนเมาและผู้ป่วยจิตเวชขึ้นเรือ<br>2. เด็กนักเรียนมัธยมต้นลงมาต้องมีผู้ปกครองมาด้วย<br>3. ห้ามนำสัตว์เลี้ยงขึ้นเรือโดยเด็ดขาด<br>4. อาจมีการจำกัดการขึ้นเรือตามการตัดสินของเจ้าหน้าที่</b>",
+            "privacy-title": "※ ข้อตกลงการเก็บและใช้ข้อมูลส่วนบุคคล ※",
+            "privacy-desc": "<b>[วัตถุประสงค์]</b> ยืนยันตัวตนและทำประกันภัย<br><b>[รายการข้อมูล]</b> ชื่อ, วันเกิด, เบอร์โทร, รูปภาพ/วิดีโอประชาสัมพันธ์<br><b>[ระยะเวลา]</b> เก็บไว้ 1 ปีนับจากวันที่สมัคร<br><b>[สิทธิปฏิเสธ]</b> สามารถปฏิเสธได้ แต่จะไม่สามารถลงเรือได้",
+            "agree-yes": "ยินยอม", "agree-no": "ไม่ยินยอม",
+            "apply-title": "ขอยื่นใบสมัครลงเรือ Kim Simin",
+            "date-year": "ปี", "date-month": "เดือน", "date-day": "วัน",
+            "rep-label": "ตัวแทนผู้สมัคร (ผู้ปกครอง)", "sign-text": "(ลายเซ็น)", "btn-clear": "ลบลายเซ็น",
+            "gender-male": "ชาย", "gender-female": "หญิง",
+            "placeholder-name": "ชื่อ-นามสกุล", "placeholder-birth": "YYYYMMDD-*", "placeholder-phone": "010-XXXX-XXXX", "placeholder-addr": "เมืองที่อยู่อาศัย",
+            "status-soldout": "เต็ม", "status-closed": "ปิดรับ", "status-ended": "สิ้นสุด", "seats-unit": "ที่นั่ง"
+        }
     };
 
     const countryLanguages = [
-        { code: "ko", flag: "🇰🇷", name: "대한민국 (한국어)" },
-        { code: "en", flag: "🇺🇸", name: "미국 (영어)" },
-        { code: "zh", flag: "🇨🇳", name: "중국 (중국어 간체)" },
-        { code: "zh_tw", flag: "🇭🇰", name: "홍콩/대만 (중국어 번체)" },
-        { code: "ja", flag: "🇯🇵", name: "일본 (일본어)" },
-        { code: "vi", flag: "🇻🇳", name: "베트남 (베트남어)" },
-        { code: "th", flag: "🇹🇭", name: "태국 (태국어)" }
+        { code: "ko", flag: "🇰🇷", korName: "대한민국", nativeName: "한국어" },
+        { code: "en", flag: "🇺🇸", korName: "미국", nativeName: "USA" },
+        { code: "zh", flag: "🇨🇳", korName: "중국", nativeName: "中国" },
+        { code: "zh_tw", flag: "🇭🇰/🇹🇼", korName: "대만·홍콩", nativeName: "臺灣·香港" },
+        { code: "ja", flag: "🇯🇵", korName: "일본", nativeName: "日本" },
+        { code: "vi", flag: "🇻🇳", korName: "베트남", nativeName: "Việt Nam" },
+        { code: "th", flag: "🇹🇭", korName: "태국", nativeName: "ประเทศไทย" }
     ];
 
     function initLanguageMenu() {
@@ -563,7 +758,9 @@
         let html = '';
         countryLanguages.forEach(lang => {
             if (!baseDict[lang.code]) baseDict[lang.code] = baseDict['en'];
-            html += `<button type="button" onclick="changeLanguage('${lang.code}')" style="width:100%; text-align:left; background:#fff; color:#333; border:1px solid #ddd; padding:8px; cursor:pointer; margin:2px 0; border-radius:3px; font-size: 16px;">${lang.flag} ${lang.name}</button>`;
+            html += `<button type="button" onclick="changeLanguage('${lang.code}')" style="width:100%; text-align:left; background:#fff; color:#333; border:1px solid #ddd; padding:8px; cursor:pointer; margin:2px 0; border-radius:3px; font-size: 16px; font-weight: bold;">
+                        ${lang.flag} ${lang.korName} (${lang.nativeName})
+                     </button>`;
         });
         langMenu.innerHTML = html;
     }
@@ -595,6 +792,29 @@
         document.querySelectorAll(".p-addr").forEach(el => el.placeholder = getTranslation("placeholder-addr"));
         document.querySelectorAll(".gender-male-label").forEach(el => el.innerText = getTranslation("gender-male"));
         document.querySelectorAll(".gender-female-label").forEach(el => el.innerText = getTranslation("gender-female"));
+        
+        document.querySelectorAll("#passenger-tbody tr").forEach(tr => {
+            const disc = tr.querySelector(".p-discount");
+            const exemp = tr.querySelector(".p-exemption");
+            if(disc) {
+                disc.options[0].text = getTranslation("opt-discount-none");
+                disc.options[1].text = getTranslation("opt-discount-jinju");
+                disc.options[2].text = getTranslation("opt-discount-sancheong");
+                disc.options[3].text = getTranslation("opt-discount-multi");
+                disc.options[4].text = getTranslation("opt-discount-other-exemption");
+            }
+            if(exemp) {
+                exemp.options[0].text = getTranslation("opt-exemption-none");
+                exemp.options[1].text = getTranslation("opt-exemption-infant");
+                exemp.options[2].text = getTranslation("opt-exemption-senior");
+                exemp.options[3].text = getTranslation("opt-exemption-official");
+                exemp.options[4].text = getTranslation("opt-exemption-disabled");
+                exemp.options[5].text = getTranslation("opt-exemption-merit");
+                exemp.options[6].text = getTranslation("opt-exemption-basic");
+                exemp.options[7].text = getTranslation("opt-exemption-honor");
+                exemp.options[8].text = getTranslation("opt-exemption-etc");
+            }
+        });
     }
 
     function toggleMenu(menuId) {
@@ -793,11 +1013,11 @@
                     if (customStat.includes("중지") || customStat === "운항없음" || customStat.includes("점검")) {
                         isDisabled = true; statusLabel = ` [${customStat}]`;
                     } else if (customStat.includes("마감")) {
-                        isDisabled = true; statusLabel = ` [${customStat}]`;
+                        isDisabled = true; statusLabel = ` [${getTranslation("status-closed")}]`;
                     }
                 } else {
-                    if (diffMins < -30) { isDisabled = true; statusLabel = " [운항종료]"; }
-                    else if (remain <= 0) { isDisabled = true; statusLabel = " [매진]"; }
+                    if (diffMins < -30) { isDisabled = true; statusLabel = ` [${getTranslation("status-ended")}]`; }
+                    else if (remain <= 0) { isDisabled = true; statusLabel = ` [${getTranslation("status-soldout")}]`; }
                 }
 
                 const radioValue = `${id}_${t}`;
@@ -807,10 +1027,10 @@
                 }
 
                 if (isDisabled) {
-                    timesHtml += `<label class="disabled-time-label" style="margin-right: 22px; display:inline-block; margin-bottom:8px;"><input type="radio" name="departure_time" value="${radioValue}" disabled> ${t} (<span style="color: #999;">${remain <= 0 ? '매진' : '마감'}</span>)${statusLabel}</label>`;
+                    timesHtml += `<label class="disabled-time-label" style="margin-right: 22px; display:inline-block; margin-bottom:8px;"><input type="radio" name="departure_time" value="${radioValue}" disabled> ${t} (<span style="color: #999;">${remain <= 0 ? getTranslation("status-soldout") : getTranslation("status-closed")}</span>)${statusLabel}</label>`;
                 } else {
                     let remainColor = remain <= 5 ? '#d9534f' : '#0040ff';
-                    timesHtml += `<label style="margin-right: 22px; display:inline-block; margin-bottom:8px; cursor:pointer;"><input type="radio" name="departure_time" value="${radioValue}"> ${t} (<span style="color: ${remainColor}; font-weight: bold;">${remain}석</span>)</label>`;
+                    timesHtml += `<label style="margin-right: 22px; display:inline-block; margin-bottom:8px; cursor:pointer;"><input type="radio" name="departure_time" value="${radioValue}"> ${t} (<span style="color: ${remainColor}; font-weight: bold;">${remain}${getTranslation("seats-unit")}</span>)</label>`;
                 }
             });
 
